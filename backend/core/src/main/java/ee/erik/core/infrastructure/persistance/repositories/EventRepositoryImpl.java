@@ -4,13 +4,9 @@ import ee.erik.core.domain.entities.Event;
 import ee.erik.core.domain.repositories.EventRepository;
 import ee.erik.core.infrastructure.persistance.mappers.EventMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,39 +27,48 @@ public class EventRepositoryImpl implements EventRepository {
     }
 
     @Override
-    public void save(Event event) {
-        this.db.execute("insert into event(name, date, location, info) values (?, ?, ?, ?)", new PreparedStatementCallback<Boolean>() {
-            @Override
-            public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
-                ps.setString(1, event.getName());
-                ps.setDate(2, new java.sql.Date(event.getDate().getTime()));
-                ps.setString(3, event.getLocation());
-                ps.setString(4, event.getInfo());
-                return ps.execute();
-            }
-        });
-
+    public Event save(Event event) {
+        this.db.update("insert into event(e_name, e_date, e_location, e_info) values (?, ?, ?, ?)", event.getName(), event.getDate(), event.getLocation(), event.getInfo());
+        return event;
     }
 
     @Override
-    public void update(Event event) {
-        this.db.update("update event set name = ?, date = ?, location = ?, info = ? where id = ?", event.getName(), event.getDate(), event.getLocation(), event.getInfo(), event.getId());
+    public Event update(Event event) {
+        this.db.update("update event set e_name = ?, e_date = ?, e_location = ?, e_info = ? where e_id = ?", event.getName(), event.getDate(), event.getLocation(), event.getInfo(), event.getId());
+        return event;
     }
 
     @Override
     public void deleteById(Long id) {
-        this.db.update("delete from event where id = ?", id);
+        this.db.update("delete from event where e_id = ?", id);
     }
 
     @Override
     public List<Event> findAll() {
-        return this.db.query("select * from event", new EventMapper());
+        return this.db.query("""
+            select 
+                e.e_id, 
+                e.e_name, 
+                e.e_date, 
+                e.e_location, 
+                e.e_info,
+                p.p_id,
+                p.name,
+                p.p_payment_method
+            from event e
+            left join participant p on e.e_id = p.p_event_id
+        """, new EventMapper());
     }
 
     @Override
     public Optional<Event> findById(Long id) {
         return Optional.ofNullable(
-          this.db.queryForObject("select * from event where id = ?", new EventMapper(), id)
+          this.db.queryForObject("""
+            select *
+            from event e
+            left join participant p on e.e_id = p.p_event_id
+            where e.e_id = ?
+        """, new EventMapper(), id)
         );
     }
 }

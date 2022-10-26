@@ -2,6 +2,7 @@ package ee.erik.core.domain.repositories;
 
 import ee.erik.core.domain.entities.Event;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,9 +10,9 @@ public interface EventRepository {
 
     int count();
 
-    void save(Event event);
+    Event save(Event event);
 
-    void update(Event event);
+    Event update(Event event);
 
     void deleteById(Long id);
 

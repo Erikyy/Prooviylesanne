@@ -14,7 +14,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class Participant {
     private Long id;
-    private Long eventId;
+    private Event event;
     private PaymentMethod paymentMethod;
     private String name;
     private Citizen citizen;

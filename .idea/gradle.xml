@@ -21,6 +21,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/backend/application" />
+            <option value="$PROJECT_DIR$/backend/application/core" />
           </set>
         </option>
       </GradleProjectSettings>
