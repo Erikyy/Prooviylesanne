@@ -1,45 +1,52 @@
 package ee.erik.core.application;
 
-import ee.erik.core.application.managers.EventsManager;
-import ee.erik.core.domain.entities.Event;
-import ee.erik.core.domain.entities.Participant;
-import ee.erik.core.domain.entities.participant.Citizen;
 import ee.erik.core.domain.entities.participant.PaymentMethod;
+import ee.erik.core.infrastructure.persistance.entities.EventEntity;
+import ee.erik.core.infrastructure.persistance.entities.ParticipantEntity;
+import ee.erik.core.infrastructure.persistance.entities.participant.CitizenEntity;
+import ee.erik.core.infrastructure.persistance.repositories.DbEventRepository;
+import ee.erik.core.infrastructure.persistance.repositories.DbParticipantRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Configuration
 public class DatabaseInit {
 
     @Bean
-    CommandLineRunner initDb(EventsManager manager) {
+    CommandLineRunner initDb(DbEventRepository dbEventRepository, DbParticipantRepository dbParticipantRepository) {
 
         return args -> {
-            Event event = new Event();
-            event.setName("Test");
-            event.setDate(Date.from(LocalDate.now().plusMonths(2).atStartOfDay().toInstant(ZoneOffset.UTC)));
-            event.setLocation("Test");
-            event.setInfo("Test test");
-            manager.addEvent(event);
 
 
-            Citizen citizen = new Citizen();
-            citizen.setLastName("Test");
-            citizen.setIdNumber(2354354352L);
-            citizen.setInfo("Test");
+            CitizenEntity citizenEntity = new CitizenEntity();
+            citizenEntity.setInfo("Test");
+            citizenEntity.setIdNumber(137642324332L);
+            citizenEntity.setLastName("Test");
 
-            Participant participant = new Participant();
-            participant.setPaymentMethod(PaymentMethod.BankTransfer);
-            participant.setEvent(event);
-            participant.setName("Test");
-            participant.setCitizen(citizen);
+            ParticipantEntity participantEntity = new ParticipantEntity();
 
-            manager.addParticipant(participant, 10L);
+            participantEntity.setName("Test test");
+            participantEntity.setCitizenEntity(citizenEntity);
+            participantEntity.setPaymentMethod(PaymentMethod.Cash);
+
+
+            Set<ParticipantEntity> participantEntities = new HashSet<>();
+
+            participantEntities.add(participantEntity);
+
+            EventEntity eventEntity = new EventEntity();
+            eventEntity.setName("Test");
+            eventEntity.setDate(new Date());
+            eventEntity.setLocation("Location");
+            eventEntity.setInfo("Test test");
+            eventEntity.setParticipantEntities(participantEntities);
+            dbEventRepository.save(eventEntity);
+
 
 
         };

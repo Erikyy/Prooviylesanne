@@ -2,21 +2,19 @@ package ee.erik.core.domain.repositories;
 
 import ee.erik.core.domain.entities.Event;
 
-import javax.swing.text.html.Option;
-import java.util.List;
+import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 
 public interface EventRepository {
 
-    int count();
+    Optional<Event> findById(Long id);
+
+    Set<Event> findBeforeDate(Date date);
+
+    Set<Event> findAfterDate(Date date);
+
+    void delete(Event event);
 
     Event save(Event event);
-
-    Event update(Event event);
-
-    void deleteById(Long id);
-
-    List<Event> findAll();
-
-    Optional<Event> findById(Long id);
 }

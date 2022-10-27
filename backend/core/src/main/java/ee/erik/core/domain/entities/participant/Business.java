@@ -1,14 +1,12 @@
 package ee.erik.core.domain.entities.participant;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Business {
     private Long id;
     private Long regCode;

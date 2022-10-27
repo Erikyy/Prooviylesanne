@@ -1,24 +1,22 @@
 package ee.erik.core.domain.entities;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Event {
-
     private Long id;
     private String name;
     private Date date;
     private String location;
     private String info;
-    private List<Participant> participants;
-
+    private Set<Participant> participants;
 }
