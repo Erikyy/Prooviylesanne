@@ -7,6 +7,7 @@ import ee.erik.core.domain.repositories.ParticipantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
@@ -83,6 +84,14 @@ public class EventService {
         } else {
             return new HashSet<>();
         }
+    }
+
+    public Optional<Event> getEventById(Long id) {
+        return this.eventRepository.findById(id);
+    }
+
+    public Optional<Participant> findParticipantInEventById(Long eventId, Long participantId) {
+        return this.participantRepository.findById(participantId);
     }
 
 }

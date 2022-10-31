@@ -1,0 +1,21 @@
+<div class="w-full bg-white flex justify-between">
+  <div class="flex-[0.7_0_0%]">
+    <div class="h-full flex flex-col justify-center">
+      <img src="assets/logo.svg" class="max-w-[150px]" />
+    </div>
+  </div>
+
+  <div class="flex flex-row flex-[2_2_0%]">
+    <div *ngFor="let route of routes" class="flex flex-row">
+      <div
+        class="h-full flex flex-col justify-center hover:bg-sky-700 {{
+          activeRoute === route.path ? 'bg-sky-800' : 'bg-none'
+        }}"
+      >
+        <a href="{{ route.path }}" class="p-4">{{ route.name }}</a>
+      </div>
+    </div>
+  </div>
+
+  <img src="assets/symbol.svg" class="p-2" />
+</div>

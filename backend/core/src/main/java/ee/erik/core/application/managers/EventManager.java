@@ -52,4 +52,12 @@ public class EventManager {
     public Set<Participant> findAllParticipantsInEvent(Long eventId) {
         return this.eventService.findAllParticipantsInEvent(eventId);
     }
+
+    public Optional<Event> getEventById(Long id) {
+        return this.eventService.getEventById(id);
+    }
+
+    public Optional<Participant> findParticipantInEventById(Long eventId, Long participantId) {
+        return this.eventService.findParticipantInEventById(eventId, participantId);
+    }
 }

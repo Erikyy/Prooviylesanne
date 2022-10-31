@@ -13,10 +13,10 @@ import java.util.Set;
 public interface DbEventRepository extends CrudRepository<EventEntity, Long> {
 
     //find all events that have already happened
-    @Query("select * from event where e_date < :in_date")
+    @Query("select * from evententity where evententity.e_date < :in_date")
     Set<EventEntity> findAllBeforeDate(@Param("in_date") Date date);
 
     //find future events
-    @Query("select * from event where e_date > :in_date")
+    @Query("select * from evententity where evententity.e_date > :in_date")
     Set<EventEntity> findAllAfterDate(@Param("in_date") Date date);
 }
