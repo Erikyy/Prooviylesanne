@@ -27,10 +27,14 @@ public class BusinessEntity {
     private String info;
 
     public Business toBusiness() {
+        if(this.id == null) {
+            return null;
+        }
         return new Business(this.id, this.regCode, this.numOfParticipants, this.info);
     }
 
     public static BusinessEntity toEntity(Business business) {
+
         return new BusinessEntity(business.getId(), business.getRegCode(), business.getNumOfParticipants(), business.getInfo());
     }
 }

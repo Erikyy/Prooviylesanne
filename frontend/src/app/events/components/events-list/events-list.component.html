@@ -1,0 +1,27 @@
+<div class="flex-col">
+  <div class="bg-sky-800 text-center">
+    <h2 class="text-white text-xl p-3">{{ title }}</h2>
+  </div>
+
+  <div class="w-full bg-white p-4">
+    <table class="w-full">
+      <tr *ngFor="let event of events; let i = index" [attr.data-index]="i">
+        <td class="w-1/2">{{ i }}. {{ event.name }}</td>
+        <td>{{ event.date | date: "dd.MM.yyyy" }}</td>
+        <td>
+          <a class="hover:underline" [routerLink]="['/' + event.id]"
+            >Osalejad</a
+          >
+        </td>
+        <td *ngIf="removable">
+          <img
+            (click)="removeClicked(event.id)"
+            class="w-4 h-4 cursor-pointer"
+            src="/assets/remove.svg"
+          />
+        </td>
+      </tr>
+    </table>
+    <ng-content></ng-content>
+  </div>
+</div>

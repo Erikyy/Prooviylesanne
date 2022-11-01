@@ -27,6 +27,9 @@ public class CitizenEntity {
     private String info;
 
     public Citizen toCitizen() {
+        if (this.id == null) {
+            return null;
+        }
         return new Citizen(this.id, this.lastName, this.idNumber, this.info);
     }
 

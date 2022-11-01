@@ -40,7 +40,13 @@ public class EventEntity {
     private Set<ParticipantEntity> participantEntities = new HashSet<>();
 
     public Event toEvent() {
-        Set<Participant> participants = this.participantEntities.stream().map(ParticipantEntity::toParticipant)
+        Set<Participant> participants = this.participantEntities.stream().map(participantEntity -> {
+            if(participantEntity != null) {
+                return participantEntity.toParticipant();
+            } else {
+                return null;
+            }
+                })
                 .collect(Collectors.toSet());
 
         return new Event(this.id, this.name, this.date, this.location, this.info, participants);
@@ -49,6 +55,6 @@ public class EventEntity {
     public static EventEntity toEntity(Event event) {
         Set<ParticipantEntity> participantEntitySet = event.getParticipants().stream().map(ParticipantEntity::toEntity)
                 .collect(Collectors.toSet());
-        return new EventEntity();
+        return new EventEntity(event.getId(), event.getName(), event.getDate(), event.getLocation(), event.getInfo(), participantEntitySet);
     }
 }

@@ -9,7 +9,7 @@
     <div *ngFor="let route of routes" class="flex flex-row">
       <div
         class="h-full flex flex-col justify-center hover:bg-sky-700 {{
-          activeRoute === route.path ? 'bg-sky-800' : 'bg-none'
+          activeRoute === route.path ? 'bg-sky-800 text-white' : 'bg-none'
         }}"
       >
         <a href="{{ route.path }}" class="p-4">{{ route.name }}</a>

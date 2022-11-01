@@ -1,0 +1,13 @@
+<div [formGroup]="formGroup" class="grid grid-cols-3 gap-12">
+  <label
+    for="last_name"
+    class="col-span-1 block mb-2 text-sm font-medium text-gray-900"
+    ><ng-content></ng-content
+  ></label>
+  <input
+    [formControlName]="controlName"
+    [placeholder]="placeholder"
+    type="text"
+    class="col-span-2 bg-gray-50 border border-neutral-500 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
+  />
+</div>

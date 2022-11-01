@@ -1,17 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFountComponent } from '../page-not-fount/page-not-fount.component';
-import { AddEventComponent } from './add-event/add-event.component';
-import { EventsComponent } from './events.component';
+import { AddEventComponent, EventsComponent, EventComponent } from './pages/';
 
 const routes: Routes = [
-  { path: '', component: EventsComponent, title: 'Avaleht' },
+  {
+    path: '',
+    component: EventsComponent,
+    title: 'Avaleht',
+    data: {
+      show: true,
+    },
+  },
   {
     path: 'add-event',
     component: AddEventComponent,
     title: 'Ürituste lisamine',
+    data: {
+      show: true,
+    },
   },
-  { path: ':id', component: PageNotFountComponent },
+  { path: ':id', component: EventComponent },
 ];
 
 @NgModule({

@@ -30,11 +30,11 @@ public class ParticipantEntity {
     @Column("c_participant_id")
     private CitizenEntity citizenEntity;
 
-    @Column("b_participant_id")
+    @Column("c_business_id")
     private BusinessEntity businessEntity;
 
     public Participant toParticipant() {
-        return new Participant(this.id, this.paymentMethod, this.name, this.citizenEntity.toCitizen(), this.businessEntity.toBusiness());
+        return new Participant(this.id, this.paymentMethod, this.name, this.citizenEntity == null ? null : this.citizenEntity.toCitizen(), this.businessEntity == null ? null : this.businessEntity.toBusiness());
     }
 
     public static ParticipantEntity toEntity(Participant participant) {

@@ -8,14 +8,4 @@ import { RouteItem } from './shared/main-header/route-item';
 })
 export class AppComponent {
   title = 'frontend';
-  routes: RouteItem[] = [
-    {
-      path: '',
-      name: 'Avaleht',
-    },
-    {
-      path: 'add-event',
-      name: 'Ürituste lisamine',
-    },
-  ];
 }

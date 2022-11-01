@@ -1,1 +1,35 @@
-<p>footer works!</p>
+<div
+  class="w-full bg-neutral-700 grid grid-cols-4 p-8 pb-12 text-white font-thin"
+>
+  <app-footer-item
+    [header]="'Curabitur'"
+    [items]="['Emauris', 'Kfringila', 'Oin magna sem', 'Kelementum']"
+  ></app-footer-item>
+  <app-footer-item
+    [header]="'Fusce'"
+    [items]="[
+      'Econsectetur',
+      'Ksollicitudin',
+      'Omvulpatate',
+      'Nunc fringilla tellu'
+    ]"
+  ></app-footer-item>
+  <app-footer-item
+    [header]="'Kontakt'"
+    [items]="[
+      'Peakontor: Tallinas',
+      'Väike-Ameerika 1, 11415 Tallinn',
+      'Telefon: 605 4450',
+      'Faks: 605 3186'
+    ]"
+  ></app-footer-item>
+  <app-footer-item
+    [header]="''"
+    [items]="[
+      'Harukontor: Võrus',
+      'Oja tn 7 (külastusaadress)',
+      'Telefon: 605 3330',
+      'Faks: 605 3155'
+    ]"
+  ></app-footer-item>
+</div>

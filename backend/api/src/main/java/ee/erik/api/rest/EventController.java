@@ -1,6 +1,7 @@
 package ee.erik.api.rest;
 
 import ee.erik.core.application.managers.EventManager;
+import ee.erik.core.application.managers.dto.CreateEventDto;
 import ee.erik.core.domain.entities.Event;
 import ee.erik.core.domain.entities.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +49,8 @@ public class EventController {
     }
 
     @PostMapping("/events")
-    public Event createNewEvent(@RequestBody Event event) {
-        return this.manager.createNewEvent(event);
+    public Event createNewEvent(@RequestBody CreateEventDto createEventDto) {
+        return this.manager.createNewEvent(createEventDto);
     }
 
     @DeleteMapping("/events/{id}")

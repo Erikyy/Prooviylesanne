@@ -1,5 +1,6 @@
 package ee.erik.core.application.managers;
 
+import ee.erik.core.application.managers.dto.CreateEventDto;
 import ee.erik.core.domain.entities.Event;
 import ee.erik.core.domain.entities.Participant;
 import ee.erik.core.domain.services.EventService;
@@ -21,7 +22,13 @@ public class EventManager {
         this.eventService = eventService;
     }
 
-    public Event createNewEvent(Event event) {
+    public Event createNewEvent(CreateEventDto createEventDto) {
+        Event event = new Event();
+        event.setName(createEventDto.getName());
+        event.setDate(createEventDto.getDate());
+        event.setLocation(createEventDto.getLocation());
+        event.setInfo(createEventDto.getInfo());
+        event.setParticipants(new HashSet<>());
         return this.eventService.createNewEvent(event);
     }
 

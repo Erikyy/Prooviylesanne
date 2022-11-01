@@ -1,0 +1,21 @@
+<div class="w-full">
+  <app-hero
+    paragraph="Sed nec elit vestibulum, <b>tincidunt orci</b> et, sagittis ex. Vestibulum rutrum neque suscipit ante mattis maximus. Nulla non sapien viverra, lobortis lorem non, accumsan metus."
+    imgUrl="/assets/pilt.jpg"
+  ></app-hero>
+
+  <div class="w-full grid grid-cols-2 gap-4">
+    <app-events-list
+      [removable]="true"
+      [title]="'Tulevased üritused'"
+      [fetchType]="'after'"
+      (onRemoveClick)="removeEvent($event)"
+    >
+      <app-button (onClick)="onAddClick()" title="Lisa üritus"></app-button>
+    </app-events-list>
+    <app-events-list
+      [title]="'Toimunud üritused'"
+      [fetchType]="'before'"
+    ></app-events-list>
+  </div>
+</div>

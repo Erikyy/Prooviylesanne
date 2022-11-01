@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { RouteItem } from './route-item';
 
 @Component({
@@ -9,27 +9,42 @@ import { RouteItem } from './route-item';
   styleUrls: ['./main-header.component.css'],
 })
 export class MainHeaderComponent implements OnInit {
-  @Input() routes: RouteItem[];
+  routes: RouteItem[];
 
   activeRoute: string = '';
 
-  constructor(private router: ActivatedRoute) {
-    this.routes = [];
+  constructor(private router: Router) {
+    this.routes = this.router.config
+      .filter((route) => {
+        if (!route.data) {
+          return false;
+        }
+        return true;
+      })
+      .map((route) => {
+        let { title, path } = route;
+        if (typeof title == 'string' && typeof path == 'string') {
+          return {
+            name: title,
+            path: path,
+          };
+        } else {
+          return {
+            name: '',
+            path: '',
+          };
+        }
+      });
 
     //this.activeRoute = active.title;
   }
 
   ngOnInit(): void {
-    this.router.title.subscribe((title) => {
-      console.log(title);
-
-      if (title) {
-        this.activeRoute = title;
-        console.log(title);
+    this.router.events.subscribe((data) => {
+      if (data instanceof NavigationEnd) {
+        this.activeRoute = data.url.slice(1, data.url.length);
+        console.log(data);
       }
-    });
-    this.router.url.subscribe((data) => {
-      console.log(data);
     });
   }
 }
