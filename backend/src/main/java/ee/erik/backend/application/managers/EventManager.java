@@ -47,7 +47,7 @@ public class EventManager {
         return this.eventService.findEventsAfterToday();
     }
 
-    public Optional<Participant> addParticipantToEvent(Long eventId, CreateParticipantDto createParticipantDto) {
+    public Participant addParticipantToEvent(Long eventId, CreateParticipantDto createParticipantDto) {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setId(createParticipantDto.getPaymentMethodId());
         Participant participant = new Participant();
@@ -70,7 +70,7 @@ public class EventManager {
         return this.eventService.addParticipantToEvent(eventId, participant);
     }
 
-    public Optional<Participant> updateParticipantInEvent(Long eventId, Participant participant) {
+    public Participant updateParticipantInEvent(Long eventId, Participant participant) {
         return this.eventService.updateParticipantInEvent(eventId, participant);
     }
 
@@ -82,11 +82,11 @@ public class EventManager {
         return this.eventService.findAllParticipantsInEvent(eventId);
     }
 
-    public Optional<Event> getEventById(Long id) {
+    public Event getEventById(Long id) {
         return this.eventService.getEventById(id);
     }
 
-    public Optional<Participant> findParticipantInEventById(Long eventId, Long participantId) {
+    public Participant findParticipantInEventById(Long eventId, Long participantId) {
         return this.eventService.findParticipantInEventById(eventId, participantId);
     }
 }

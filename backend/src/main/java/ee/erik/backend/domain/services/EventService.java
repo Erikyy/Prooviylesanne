@@ -5,6 +5,7 @@ import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.repositories.EventRepository;
 import ee.erik.backend.domain.repositories.ParticipantRepository;
 import ee.erik.backend.domain.services.exceptions.DomainEventDateException;
+import ee.erik.backend.domain.services.exceptions.DomainNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,16 @@ import java.util.Set;
 @Service
 public class EventService {
 
-    private final EventRepository eventRepository;
-    private final ParticipantRepository participantRepository;
+    private EventRepository eventRepository;
+    private ParticipantRepository participantRepository;
 
     @Autowired
-    public EventService(EventRepository eventRepository, ParticipantRepository participantRepository) {
+    public void setEventRepository(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
+    }
+
+    @Autowired
+    public void setParticipantRepository(ParticipantRepository participantRepository) {
         this.participantRepository = participantRepository;
     }
 
@@ -44,6 +49,8 @@ public class EventService {
             } else {
                 throw new DomainEventDateException("Date: " + event.get().getDate().toString() + " is not accepted");
             }
+        } else {
+            throw new DomainNotFoundException("Event not found: " + eventId);
         }
 
     }
@@ -57,37 +64,37 @@ public class EventService {
     }
 
 
-    public Optional<Participant> addParticipantToEvent(Long eventId, Participant participant) {
+    public Participant addParticipantToEvent(Long eventId, Participant participant) {
         Optional<Event> event = this.eventRepository.findById(eventId);
         if(event.isPresent()) {
             if (event.get().getDate().after(new Date())) {
                 event.get().getParticipants().add(participant);
                 this.eventRepository.save(event.get());
-                return Optional.of(participant);
+                return participant;
             } else  {
                 throw new DomainEventDateException("Date: " + event.get().getDate().toString() + " is not accepted");
             }
         } else {
-            return Optional.empty();
+            throw new DomainNotFoundException("Event not found: " + eventId);
         }
     }
 
-    public Optional<Participant> updateParticipantInEvent(Long eventId, Participant participant) {
+    public Participant updateParticipantInEvent(Long eventId, Participant participant) {
         Optional<Event> event = this.eventRepository.findById(eventId);
 
         if (event.isPresent()) {
             if (event.get().getDate().after(new Date())) {
                 Optional<Participant> foundParticipant = this.participantRepository.findById(participant.getId());
                 if (foundParticipant.isPresent()) {
-                    return Optional.of(this.participantRepository.save(participant));
+                    return this.participantRepository.save(participant);
                 } else {
-                    return Optional.empty();
+                    throw new DomainNotFoundException("Participant not found: " + participant.getId() + " " + participant.getName());
                 }
             } else {
                 throw new DomainEventDateException("Date: " + event.get().getDate().toString() + " is not accepted");
             }
         } else {
-            return Optional.empty();
+            throw new DomainNotFoundException("Event not found: " + eventId);
         }
     }
 
@@ -96,15 +103,18 @@ public class EventService {
         if (event.isPresent()) {
             if (event.get().getDate().after(new Date())) {
                 Optional<Participant> participant = this.participantRepository.findById(participantId);
-                participant.ifPresent(this.participantRepository::delete);
+                if (participant.isPresent()) {
+                    this.participantRepository.delete(participant.get());
+                } else {
+                    throw new DomainNotFoundException("Participant not found: " + participantId);
+                }
+
             } else {
                 throw new DomainEventDateException("Date: " + event.get().getDate().toString() + " is not accepted");
             }
         } else {
-            //throw exception
+            throw new DomainNotFoundException("Event not found: " + eventId);
         }
-
-
     }
 
     public Set<Participant> findAllParticipantsInEvent(Long eventId) {
@@ -112,16 +122,38 @@ public class EventService {
         if(event.isPresent()) {
             return event.get().getParticipants();
         } else {
-            return new HashSet<>();
+            throw new DomainNotFoundException("Event not found: " + eventId);
         }
     }
 
-    public Optional<Event> getEventById(Long id) {
-        return this.eventRepository.findById(id);
+    public Event getEventById(Long id) {
+        Optional<Event> event = this.eventRepository.findById(id);
+        if (event.isPresent()) {
+            return event.get();
+        } else {
+            throw new DomainNotFoundException("Event not found: " + id);
+        }
     }
 
-    public Optional<Participant> findParticipantInEventById(Long eventId, Long participantId) {
-        return this.participantRepository.findById(participantId);
+    public Participant findParticipantInEventById(Long eventId, Long participantId) {
+        Optional<Event> event = this.eventRepository.findById(eventId);
+        //verify that event actually exists
+        if (event.isPresent()) {
+            Optional<Participant> participant = this.participantRepository.findById(participantId);
+            if (participant.isPresent()) {
+                if (event.get().getParticipants().contains(participant.get())) {
+                    return participant.get();
+                } else {
+                    throw new DomainNotFoundException("Something isn't right, participant: "+ participantId +" not found in event: " + eventId);
+                }
+
+            } else {
+                throw new DomainNotFoundException("Participant not found: " + eventId);
+            }
+        } else {
+            throw new DomainNotFoundException("Event not found: " + eventId);
+        }
+
     }
 
 }

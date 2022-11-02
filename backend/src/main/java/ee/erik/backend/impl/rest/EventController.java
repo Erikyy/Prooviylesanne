@@ -45,7 +45,7 @@ public class EventController {
     }
 
     @GetMapping("/events/{id}")
-    public Optional<Event> getEventById(@PathVariable Long id) {
+    public Event getEventById(@PathVariable Long id) {
         return this.manager.getEventById(id);
     }
 
@@ -65,18 +65,18 @@ public class EventController {
     }
 
     @GetMapping("/events/{eventId}/participants/{participantId}")
-    public Optional<Participant> findParticipantInEventById(@PathVariable Long eventId, @PathVariable Long participantId) {
+    public Participant findParticipantInEventById(@PathVariable Long eventId, @PathVariable Long participantId) {
         return this.manager.findParticipantInEventById(eventId, participantId);
     }
 
     @PostMapping("/events/{eventId}/participants")
-    public Optional<Participant> addParticipantToEvent(@PathVariable Long eventId, @RequestBody CreateParticipantDto createParticipantDto) {
+    public Participant addParticipantToEvent(@PathVariable Long eventId, @RequestBody CreateParticipantDto createParticipantDto) {
         System.out.println(createParticipantDto.toString());
         return this.manager.addParticipantToEvent(eventId, createParticipantDto);
     }
 
     @PutMapping("/events/{eventId}/participants/{participantId}")
-    public Optional<Participant> updateParticipantInEvent(@PathVariable Long eventId, @PathVariable Long participantId, @RequestBody Participant participant) {
+    public Participant updateParticipantInEvent(@PathVariable Long eventId, @PathVariable Long participantId, @RequestBody Participant participant) {
         return this.manager.updateParticipantInEvent(eventId, participant);
     }
 
