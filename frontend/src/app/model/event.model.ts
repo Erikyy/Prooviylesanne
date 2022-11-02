@@ -1,7 +1,10 @@
+import { IParticipant } from './participant.model';
+
 export interface IEvent {
   id: number;
   name: string;
   date: Date;
   location: string;
-  participants: any[];
+  info: string;
+  participants: IParticipant[];
 }

@@ -1,0 +1,45 @@
+<div class="w-full">
+  <h1 class="text-sky-800 text-xl">{{ title }}</h1>
+  <fieldset
+    class="w-full flex justify-center gap-12"
+    [formGroup]="participantTypeForm"
+    id="participantType"
+  >
+    <div class="flex gap-1">
+      <input
+        id="citizen"
+        checked
+        type="radio"
+        value="citizen"
+        name="participantType"
+        formControlName="participantType"
+      />
+      <label for="citizen">Eraisik</label>
+    </div>
+    <div class="flex gap-1">
+      <input
+        id="business"
+        type="radio"
+        value="business"
+        name="participantType"
+        formControlName="participantType"
+      />
+      <label for="business">Ettevõte</label>
+    </div>
+  </fieldset>
+  <app-participant-citizen-form
+    (onSubmit)="onSubmit($event)"
+    (onBackClicked)="onBackClicked()"
+    (onEditSubmit)="onEditSubmit($event)"
+    *ngIf="participantTypeForm.value.participantType === 'citizen'"
+    [title]="title"
+  ></app-participant-citizen-form>
+  <app-participant-business-form
+    (onSubmit)="onSubmit($event)"
+    (onBackClicked)="onBackClicked()"
+    (onEditSubmit)="onEditSubmit($event)"
+    *ngIf="participantTypeForm.value.participantType === 'business'"
+    [title]="title"
+  >
+  </app-participant-business-form>
+</div>

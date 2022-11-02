@@ -6,7 +6,6 @@ import { RouteItem } from './route-item';
   selector: 'app-header',
   inputs: ['routes'],
   templateUrl: './main-header.component.html',
-  styleUrls: ['./main-header.component.css'],
 })
 export class MainHeaderComponent implements OnInit {
   routes: RouteItem[];

@@ -34,6 +34,9 @@ public class CitizenEntity {
     }
 
     public static CitizenEntity toEntiy(Citizen citizen) {
+        if (citizen == null) {
+            return null;
+        }
         return new CitizenEntity(citizen.getId(), citizen.getLastName(), citizen.getIdNumber(), citizen.getInfo());
     }
 }

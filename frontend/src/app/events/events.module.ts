@@ -10,8 +10,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ParticipantComponent } from './pages/participant/participant.component';
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { EventComponent } from './pages/event/event.component';
+import { ParticipantFormComponent } from './components/participant-form/participant-form.component';
+import { ParticipantCitizenFormComponent } from './components/participant-form/participant-citizen-form/participant-citizen-form.component';
+import { ParticipantBusinessFormComponent } from './components/participant-form/participant-business-form/participant-business-form.component';
 @NgModule({
-  declarations: [EventsComponent, AddEventComponent, EventsListComponent, ParticipantComponent, EventFormComponent, EventComponent],
+  declarations: [EventsComponent, AddEventComponent, EventsListComponent, ParticipantComponent, EventFormComponent, EventComponent, ParticipantFormComponent, ParticipantCitizenFormComponent, ParticipantBusinessFormComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

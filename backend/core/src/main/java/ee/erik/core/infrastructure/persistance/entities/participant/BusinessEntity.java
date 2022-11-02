@@ -34,7 +34,9 @@ public class BusinessEntity {
     }
 
     public static BusinessEntity toEntity(Business business) {
-
+        if (business == null) {
+            return null;
+        }
         return new BusinessEntity(business.getId(), business.getRegCode(), business.getNumOfParticipants(), business.getInfo());
     }
 }

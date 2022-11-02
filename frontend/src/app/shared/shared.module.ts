@@ -8,6 +8,8 @@ import { ButtonComponent } from './button/button.component';
 import { InputComponent } from './input/input.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MiniBannerComponent } from './mini-banner/mini-banner.component';
+import { FlexGridComponent } from './flex-grid/flex-grid.component';
+import { FlexGridItemComponent } from './flex-grid-item/flex-grid-item.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { MiniBannerComponent } from './mini-banner/mini-banner.component';
     ButtonComponent,
     InputComponent,
     MiniBannerComponent,
+    FlexGridComponent,
+    FlexGridItemComponent,
   ],
   exports: [
     MainHeaderComponent,
@@ -26,6 +30,8 @@ import { MiniBannerComponent } from './mini-banner/mini-banner.component';
     ButtonComponent,
     InputComponent,
     MiniBannerComponent,
+    FlexGridComponent,
+    FlexGridItemComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, FormsModule],
 })

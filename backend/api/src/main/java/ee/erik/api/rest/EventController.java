@@ -1,7 +1,8 @@
 package ee.erik.api.rest;
 
+import ee.erik.core.application.dto.CreateParticipantDto;
 import ee.erik.core.application.managers.EventManager;
-import ee.erik.core.application.managers.dto.CreateEventDto;
+import ee.erik.core.application.dto.CreateEventDto;
 import ee.erik.core.domain.entities.Event;
 import ee.erik.core.domain.entities.Participant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +70,9 @@ public class EventController {
     }
 
     @PostMapping("/events/{eventId}/participants")
-    public Optional<Participant> addParticipantToEvent(@PathVariable Long eventId, @RequestBody Participant participant) {
-        return this.manager.addParticipantToEvent(eventId, participant);
+    public Optional<Participant> addParticipantToEvent(@PathVariable Long eventId, @RequestBody CreateParticipantDto createParticipantDto) {
+        System.out.println(createParticipantDto.toString());
+        return this.manager.addParticipantToEvent(eventId, createParticipantDto);
     }
 
     @PutMapping("/events/{eventId}/participants/{participantId}")

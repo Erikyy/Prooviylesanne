@@ -1,1 +1,16 @@
-<p>participant works!</p>
+<app-mini-banner title="Osavõtja info"></app-mini-banner>
+
+<div>
+  <app-participant-citizen-form
+    (onBackClicked)="onBackClicked()"
+    (onEditSubmit)="onEditSubmit($event)"
+    [participant]="participant"
+    *ngIf="participant.citizen !== null"
+  ></app-participant-citizen-form>
+  <app-participant-business-form
+    (onBackClicked)="onBackClicked()"
+    (onEditSubmit)="onEditSubmit($event)"
+    [participant]="participant"
+    *ngIf="participant.business !== null"
+  ></app-participant-business-form>
+</div>

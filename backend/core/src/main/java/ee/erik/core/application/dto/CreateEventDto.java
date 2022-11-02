@@ -1,4 +1,4 @@
-package ee.erik.core.application.managers.dto;
+package ee.erik.core.application.dto;
 
 import lombok.Data;
 

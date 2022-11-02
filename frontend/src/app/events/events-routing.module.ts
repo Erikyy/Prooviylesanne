@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFountComponent } from '../page-not-fount/page-not-fount.component';
 import { AddEventComponent, EventsComponent, EventComponent } from './pages/';
+import { ParticipantComponent } from './pages/participant/participant.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
     },
   },
   { path: ':id', component: EventComponent },
+  {
+    path: ':id/participant/:pid',
+    component: ParticipantComponent,
+  },
 ];
 
 @NgModule({

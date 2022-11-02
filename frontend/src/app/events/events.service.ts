@@ -3,6 +3,12 @@ import { Observable } from 'rxjs';
 import { IEvent } from '../model/event.model';
 import { BackendService } from '../shared/backend.service';
 import * as moment from 'moment';
+import {
+  IParticipantAdd,
+  IParticipantBusinessAdd,
+  IParticipantCitizenAdd,
+} from '../model/participant-add.model';
+import { IParticipant } from '../model/participant.model';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +36,56 @@ export class EventsService {
 
   removeEvent(id: number): Observable<unknown> {
     return this.backendService.removeEvent(id);
+  }
+
+  getEventById(id: number): Observable<IEvent> {
+    return this.backendService.getEventById(id);
+  }
+
+  removeParticipantFromEvent(
+    eventId: number,
+    participantId: number
+  ): Observable<unknown> {
+    return this.backendService.removeParticipantFromEvent(
+      eventId,
+      participantId
+    );
+  }
+
+  addParticipantToEvent(
+    eventId: number,
+    participant: IParticipantAdd
+  ): Observable<IParticipant> {
+    return this.backendService.addParticipantToEvent(eventId, participant);
+  }
+
+  getParticipantFromEvent(
+    eventId: number,
+    participantId: number
+  ): Observable<IParticipant> {
+    return this.backendService.getParticipantFromEvent(eventId, participantId);
+  }
+
+  extactEventIdFromUrl(url: string): number {
+    return +url.split('/')[1];
+  }
+
+  extactEventIdAndParticipantIdFromUrl(url: string): {
+    eventId: number;
+    participantId: number;
+  } {
+    let stringArr = url.split('/');
+
+    return {
+      eventId: +stringArr[1],
+      participantId: +stringArr[3],
+    };
+  }
+
+  updateParticipantInEvent(
+    eventId: number,
+    participant: IParticipant
+  ): Observable<IParticipant> {
+    return this.backendService.updateParticipantInEvent(eventId, participant);
   }
 }

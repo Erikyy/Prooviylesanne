@@ -1,0 +1,57 @@
+<form
+  class="flex flex-col gap-2 pt-6"
+  [formGroup]="participantForm"
+  (ngSubmit)="onSubmit()"
+>
+  <app-input [formGroup]="participantForm" controlName="name"
+    >Eesnimi:</app-input
+  >
+  <app-input [formGroup]="participantForm" controlName="lastName"
+    >Perenimi:</app-input
+  >
+  <app-input [formGroup]="participantForm" controlName="idNumber"
+    >Isikukood:</app-input
+  >
+  <div class="grid grid-cols-3 gap-12">
+    <label
+      for="paymentMethod"
+      class="col-span-1 block mb-2 text-sm font-medium text-gray-900"
+      >Makseviis:</label
+    >
+    <select
+      id="paymentMethod"
+      class="col-span-2 bg-gray-50 border border-neutral-500 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
+      name="paymentMethod"
+      [formGroup]="participantForm"
+    >
+      <option selected value="Cash">sularaha</option>
+      <option value="BankTransfer">pangaülekanne</option>
+    </select>
+  </div>
+
+  <div class="grid grid-cols-3 gap-12">
+    <label
+      for="info"
+      class="col-span-1 block mb-2 text-sm font-medium text-gray-900"
+      >Lisainfo:</label
+    >
+    <textarea
+      id="info"
+      formControlName="info"
+      type="text"
+      class="col-span-2 bg-gray-50 border border-neutral-500 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
+    ></textarea>
+  </div>
+  <div class="flex gap-2 pt-8">
+    <app-button
+      (onClick)="onBackClicked()"
+      [buttonStyle]="btnStyle1"
+      title="Tagasi"
+      [buttonType]="''"
+    ></app-button>
+    <app-button
+      [buttonStyle]="btnStyle2"
+      [title]="participant.citizen ? 'Salvesta' : 'Lisa'"
+    ></app-button>
+  </div>
+</form>
