@@ -69,28 +69,36 @@ export class EventComponent implements OnInit {
   removeParticipant(participantId: number) {
     this.eventService
       .removeParticipantFromEvent(this.eventId, participantId)
-      .subscribe(() => {
-        const url = this.router.url;
-        this.router
-          .navigateByUrl('.', { skipLocationChange: true })
-          .then(() => {
-            this.router.navigateByUrl(url);
-          });
+      .subscribe({
+        complete: () => {
+          const url = this.router.url;
+          this.router
+            .navigateByUrl('.', { skipLocationChange: true })
+            .then(() => {
+              this.router.navigateByUrl(url);
+            });
+        },
+        error: () => {
+          alert('Osaleja eemaldamine põrus');
+        },
       });
   }
 
   onSubmit(participant: IParticipantAdd) {
-    console.log('submit');
-
     this.eventService
       .addParticipantToEvent(this.eventId, participant)
-      .subscribe(() => {
-        const url = this.router.url;
-        this.router
-          .navigateByUrl('.', { skipLocationChange: true })
-          .then(() => {
-            this.router.navigateByUrl(url);
-          });
+      .subscribe({
+        complete: () => {
+          const url = this.router.url;
+          this.router
+            .navigateByUrl('.', { skipLocationChange: true })
+            .then(() => {
+              this.router.navigateByUrl(url);
+            });
+        },
+        error: () => {
+          alert('Osaleja lisamine põrus');
+        },
       });
   }
 

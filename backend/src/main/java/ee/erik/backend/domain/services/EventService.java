@@ -4,6 +4,7 @@ import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.repositories.EventRepository;
 import ee.erik.backend.domain.repositories.ParticipantRepository;
+import ee.erik.backend.domain.services.exceptions.DomainEventDateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +27,25 @@ public class EventService {
     }
 
     public Event createNewEvent(Event event) {
-        return this.eventRepository.save(event);
+        if (event.getDate().after(new Date())) {
+            return this.eventRepository.save(event);
+        } else {
+            throw new DomainEventDateException("Date: " + event.getDate().toString() + " is not accepted");
+        }
+
     }
 
     public void deleteEvent(Long eventId) {
         Optional<Event> event = this.eventRepository.findById(eventId);
-        event.ifPresent(value -> this.eventRepository.delete(event.get()));
+        if (event.isPresent()) {
+            //check date here maybe throw some exception
+            if (event.get().getDate().after(new Date())) {
+                this.eventRepository.delete(event.get());
+            } else {
+                throw new DomainEventDateException("Date: " + event.get().getDate().toString() + " is not accepted");
+            }
+        }
+
     }
 
     public Set<Event> findEventsBeforeToday() {
@@ -44,13 +58,15 @@ public class EventService {
 
 
     public Optional<Participant> addParticipantToEvent(Long eventId, Participant participant) {
-
         Optional<Event> event = this.eventRepository.findById(eventId);
-
         if(event.isPresent()) {
-            event.get().getParticipants().add(participant);
-            this.eventRepository.save(event.get());
-            return Optional.of(participant);
+            if (event.get().getDate().after(new Date())) {
+                event.get().getParticipants().add(participant);
+                this.eventRepository.save(event.get());
+                return Optional.of(participant);
+            } else  {
+                throw new DomainEventDateException("Date: " + event.get().getDate().toString() + " is not accepted");
+            }
         } else {
             return Optional.empty();
         }
@@ -60,21 +76,35 @@ public class EventService {
         Optional<Event> event = this.eventRepository.findById(eventId);
 
         if (event.isPresent()) {
-            Optional<Participant> foundParticipant = this.participantRepository.findById(participant.getId());
-            if (foundParticipant.isPresent()) {
-                return Optional.of(this.participantRepository.save(participant));
+            if (event.get().getDate().after(new Date())) {
+                Optional<Participant> foundParticipant = this.participantRepository.findById(participant.getId());
+                if (foundParticipant.isPresent()) {
+                    return Optional.of(this.participantRepository.save(participant));
+                } else {
+                    return Optional.empty();
+                }
             } else {
-                return Optional.empty();
+                throw new DomainEventDateException("Date: " + event.get().getDate().toString() + " is not accepted");
             }
-
         } else {
             return Optional.empty();
         }
     }
 
     public void deleteParticipantFromEvent(Long eventId, Long participantId) {
-        Optional<Participant> participant = this.participantRepository.findById(participantId);
-        participant.ifPresent(value -> this.participantRepository.delete(value));
+        Optional<Event> event = this.eventRepository.findById(eventId);
+        if (event.isPresent()) {
+            if (event.get().getDate().after(new Date())) {
+                Optional<Participant> participant = this.participantRepository.findById(participantId);
+                participant.ifPresent(this.participantRepository::delete);
+            } else {
+                throw new DomainEventDateException("Date: " + event.get().getDate().toString() + " is not accepted");
+            }
+        } else {
+            //throw exception
+        }
+
+
     }
 
     public Set<Participant> findAllParticipantsInEvent(Long eventId) {

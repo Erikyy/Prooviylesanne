@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IEvent } from '../model/event.model';
 
 import { environment } from 'src/environments/environment';
-import { catchError, map, Observable, of, retry } from 'rxjs';
+import { catchError, map, Observable, of, retry, throwError } from 'rxjs';
 import { IEventAdd } from '../model/event-add.model';
 import {
   IParticipantAdd,
@@ -124,10 +124,10 @@ export class BackendService {
   }
 
   private handleError<T>(operation: string = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.log(`ERROR: ${operation} ${result}`);
+    return (error: any) => {
+      console.log(`ERROR: ${operation}`);
 
-      return of(result as T);
+      return throwError(() => new Error(`ERROR: ${operation} ${error}`));
     };
   }
 }

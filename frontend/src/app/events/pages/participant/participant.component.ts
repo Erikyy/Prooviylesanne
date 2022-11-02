@@ -52,11 +52,14 @@ export class ParticipantComponent implements OnInit {
   onEditSubmit(participant: IParticipant): void {
     let { eventId, participantId } =
       this.eventService.extactEventIdAndParticipantIdFromUrl(this.router.url);
-    this.eventService
-      .updateParticipantInEvent(eventId, participant)
-      .subscribe(() => {
+    this.eventService.updateParticipantInEvent(eventId, participant).subscribe({
+      complete: () => {
         this.location.back();
-      });
+      },
+      error: (err) => {
+        alert('Osaleja muutmine põrus');
+      },
+    });
   }
 
   onBackClicked(): void {

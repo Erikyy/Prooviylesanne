@@ -39,8 +39,6 @@ export class ParticipantFormComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(participant: IParticipantAdd): void {
-    console.log(participant);
-
     this.submit.emit(participant);
   }
 

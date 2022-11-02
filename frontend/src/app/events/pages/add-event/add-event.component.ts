@@ -28,8 +28,14 @@ export class AddEventComponent implements OnInit {
           info,
           location,
         })
-        .subscribe(() => {
-          this.router.navigate(['/']);
+        .subscribe({
+          complete: () => {
+            this.router.navigate(['/']);
+          },
+          error: (err) => {
+            //simple error handling
+            alert('Ürituse lisamine põrus');
+          },
         });
     }
   }
