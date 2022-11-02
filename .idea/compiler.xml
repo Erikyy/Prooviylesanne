@@ -8,12 +8,16 @@
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/2.7.5/14b8494f9923ea27471a16f07529964cecfdb831/spring-boot-configuration-processor-2.7.5.jar" />
           <entry name="$PROJECT_DIR$/../.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
         </processorPath>
-        <module name="backend.core.main" />
+        <module name="backend.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="backend.main" target="17" />
-      <module name="backend.test" target="17" />
+      <module name="backend.api.main" target="17" />
+      <module name="backend.api.test" target="17" />
+      <module name="backend.application.main" target="17" />
+      <module name="backend.application.test" target="17" />
+      <module name="backend.core.main" target="17" />
+      <module name="backend.core.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -28,6 +28,7 @@
     </div>
   </fieldset>
   <app-participant-citizen-form
+    [paymentMethods]="paymentMethods"
     (onSubmit)="onSubmit($event)"
     (onBackClicked)="onBackClicked()"
     (onEditSubmit)="onEditSubmit($event)"
@@ -35,6 +36,7 @@
     [title]="title"
   ></app-participant-citizen-form>
   <app-participant-business-form
+    [paymentMethods]="paymentMethods"
     (onSubmit)="onSubmit($event)"
     (onBackClicked)="onBackClicked()"
     (onEditSubmit)="onEditSubmit($event)"

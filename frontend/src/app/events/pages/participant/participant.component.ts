@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { IParticipant } from 'src/app/model/participant.model';
 import { EventsService } from '../../events.service';
+import { IPaymentMethod } from 'src/app/model/payment-method.model';
 
 @Component({
   selector: 'app-participant',
@@ -14,8 +15,12 @@ export class ParticipantComponent implements OnInit {
     citizen: null,
     id: 0,
     name: '',
-    paymentMethod: '',
+    paymentMethod: {
+      id: -1,
+      method: '',
+    },
   };
+  paymentMethods: IPaymentMethod[] = [];
 
   constructor(
     private location: Location,
@@ -25,6 +30,13 @@ export class ParticipantComponent implements OnInit {
 
   ngOnInit(): void {
     this.getParticipant();
+    this.getPaymentMethods();
+  }
+
+  getPaymentMethods() {
+    this.eventService.getPaymentMethods().subscribe((methods) => {
+      this.paymentMethods = methods;
+    });
   }
 
   getParticipant() {

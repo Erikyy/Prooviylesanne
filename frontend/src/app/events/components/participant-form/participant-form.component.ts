@@ -6,6 +6,7 @@ import {
   IParticipantCitizenAdd,
 } from 'src/app/model/participant-add.model';
 import { IParticipant } from 'src/app/model/participant.model';
+import { IPaymentMethod } from 'src/app/model/payment-method.model';
 import { ButtonStyle } from 'src/app/shared/button/button.component';
 
 @Component({
@@ -14,6 +15,8 @@ import { ButtonStyle } from 'src/app/shared/button/button.component';
 })
 export class ParticipantFormComponent implements OnInit {
   @Input() title: string = '';
+
+  @Input() paymentMethods: IPaymentMethod[] = [];
 
   @Output('onSubmit') submit: EventEmitter<IParticipantAdd> =
     new EventEmitter();
@@ -36,6 +39,8 @@ export class ParticipantFormComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(participant: IParticipantAdd): void {
+    console.log(participant);
+
     this.submit.emit(participant);
   }
 

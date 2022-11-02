@@ -19,13 +19,18 @@
       >Makseviis:</label
     >
     <select
+      controlName="paymentMethod"
       id="paymentMethod"
       class="col-span-2 bg-gray-50 border border-neutral-500 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
       name="paymentMethod"
       [formGroup]="participantForm"
     >
-      <option selected value="Cash">sularaha</option>
-      <option value="BankTransfer">pangaülekanne</option>
+      <option
+        *ngFor="let paymentMethod of paymentMethods"
+        [ngValue]="paymentMethod.id"
+      >
+        {{ paymentMethod.method }}
+      </option>
     </select>
   </div>
 
@@ -47,9 +52,9 @@
       (onClick)="onBackClicked()"
       [buttonStyle]="btnStyle1"
       title="Tagasi"
-      [buttonType]="''"
     ></app-button>
     <app-button
+      [buttonType]="''"
       [buttonStyle]="btnStyle2"
       [title]="participant.business ? 'Salvesta' : 'Lisa'"
     ></app-button>

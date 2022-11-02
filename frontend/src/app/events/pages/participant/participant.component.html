@@ -2,12 +2,14 @@
 
 <div>
   <app-participant-citizen-form
+    [paymentMethods]="paymentMethods"
     (onBackClicked)="onBackClicked()"
     (onEditSubmit)="onEditSubmit($event)"
     [participant]="participant"
     *ngIf="participant.citizen !== null"
   ></app-participant-citizen-form>
   <app-participant-business-form
+    [paymentMethods]="paymentMethods"
     (onBackClicked)="onBackClicked()"
     (onEditSubmit)="onEditSubmit($event)"
     [participant]="participant"

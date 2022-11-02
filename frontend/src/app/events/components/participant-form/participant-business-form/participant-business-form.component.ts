@@ -7,6 +7,7 @@ import {
   IParticipantCitizenFormData,
 } from 'src/app/model/participant-add.model';
 import { IParticipant } from 'src/app/model/participant.model';
+import { IPaymentMethod } from 'src/app/model/payment-method.model';
 import { ButtonStyle } from 'src/app/shared/button/button.component';
 
 @Component({
@@ -15,12 +16,18 @@ import { ButtonStyle } from 'src/app/shared/button/button.component';
 })
 export class ParticipantBusinessFormComponent implements OnInit {
   @Input() title: string = '';
+
+  @Input() paymentMethods: IPaymentMethod[] = [];
+
   @Input() participant: IParticipant = {
     id: 0,
     business: null,
     citizen: null,
     name: '',
-    paymentMethod: 'Cash',
+    paymentMethod: {
+      id: -1,
+      method: '',
+    },
   };
 
   @Output('onSubmit') submit: EventEmitter<IParticipantAdd> =
@@ -38,7 +45,7 @@ export class ParticipantBusinessFormComponent implements OnInit {
     info: new FormControl(),
     name: new FormControl(),
     numOfParticipants: new FormControl(),
-    paymentMethod: new FormControl('Cash'),
+    paymentMethod: new FormControl(),
     regCode: new FormControl(),
   });
 
@@ -51,12 +58,14 @@ export class ParticipantBusinessFormComponent implements OnInit {
         numOfParticipants: this.participant.business.numOfParticipants,
         info: this.participant.business.info,
         name: this.participant.name,
-        paymentMethod: this.participant.paymentMethod,
+        paymentMethod: this.participant.paymentMethod.id,
       });
     }
   }
 
   onSubmit(): void {
+    console.log('submit');
+
     let { info, name, numOfParticipants, paymentMethod, regCode } =
       this.participantForm.value;
 
@@ -65,7 +74,10 @@ export class ParticipantBusinessFormComponent implements OnInit {
         this.editSubmit.emit({
           id: this.participant.id,
           name,
-          paymentMethod,
+          paymentMethod: {
+            id: paymentMethod,
+            method: '',
+          },
           business: {
             id: this.participant.business.id,
             regCode,
@@ -77,7 +89,7 @@ export class ParticipantBusinessFormComponent implements OnInit {
       } else {
         this.submit.emit({
           name,
-          paymentMethod,
+          paymentMethodId: paymentMethod,
           business: {
             regCode,
             numOfParticipants,

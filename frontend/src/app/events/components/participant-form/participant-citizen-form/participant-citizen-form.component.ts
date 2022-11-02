@@ -6,6 +6,7 @@ import {
   IParticipantCitizenFormData,
 } from 'src/app/model/participant-add.model';
 import { IParticipant } from 'src/app/model/participant.model';
+import { IPaymentMethod } from 'src/app/model/payment-method.model';
 import { ButtonStyle } from 'src/app/shared/button/button.component';
 
 @Component({
@@ -15,12 +16,17 @@ import { ButtonStyle } from 'src/app/shared/button/button.component';
 export class ParticipantCitizenFormComponent implements OnInit {
   @Input() title: string = '';
 
+  @Input() paymentMethods: IPaymentMethod[] = [];
+
   @Input() participant: IParticipant = {
     id: 0,
     business: null,
     citizen: null,
     name: '',
-    paymentMethod: 'Cash',
+    paymentMethod: {
+      id: -1,
+      method: '',
+    },
   };
 
   @Output('onSubmit') submit: EventEmitter<IParticipantAdd> =
@@ -39,7 +45,7 @@ export class ParticipantCitizenFormComponent implements OnInit {
     info: new FormControl(),
     lastName: new FormControl(),
     name: new FormControl(),
-    paymentMethod: new FormControl('Cash'),
+    paymentMethod: new FormControl(1),
   });
 
   constructor(private formBuilder: FormBuilder) {}
@@ -51,21 +57,25 @@ export class ParticipantCitizenFormComponent implements OnInit {
         info: this.participant.citizen.info,
         lastName: this.participant.citizen.lastName,
         name: this.participant.name,
-        paymentMethod: this.participant.paymentMethod,
+        paymentMethod: this.participant.paymentMethod.id,
       });
     }
   }
 
   onSubmit(): void {
+    console.log('submit');
     let { name, idNumber, info, lastName, paymentMethod } =
       this.participantForm.value;
-
+    console.log(paymentMethod);
     if (name && idNumber && info && lastName && paymentMethod) {
       if (this.participant.citizen) {
         this.editSubmit.emit({
           id: this.participant.id,
           name,
-          paymentMethod,
+          paymentMethod: {
+            id: paymentMethod,
+            method: '',
+          },
           citizen: {
             id: this.participant.citizen.id,
             lastName,
@@ -75,9 +85,11 @@ export class ParticipantCitizenFormComponent implements OnInit {
           business: null,
         });
       } else {
+        console.log('submit new');
+
         this.submit.emit({
           name,
-          paymentMethod,
+          paymentMethodId: paymentMethod,
           citizen: {
             lastName,
             idNumber,

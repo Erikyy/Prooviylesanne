@@ -11,6 +11,7 @@ import {
   IParticipantCitizenAdd,
 } from '../model/participant-add.model';
 import { IParticipant } from '../model/participant.model';
+import { IPaymentMethod } from '../model/payment-method.model';
 
 @Injectable({
   providedIn: 'root',
@@ -111,6 +112,14 @@ export class BackendService {
       )
       .pipe(
         catchError(this.handleError<IParticipant>('updateParticipantInEvent'))
+      );
+  }
+
+  getPaymentMethods(): Observable<IPaymentMethod[]> {
+    return this.http
+      .get<IPaymentMethod[]>(`${environment.apiUrl}/payment_methods`)
+      .pipe(
+        catchError(this.handleError<IPaymentMethod[]>('getPaymentMethods'))
       );
   }
 

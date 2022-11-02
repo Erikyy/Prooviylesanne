@@ -7,6 +7,7 @@ import {
   IParticipantCitizenAdd,
 } from 'src/app/model/participant-add.model';
 import { IParticipant } from 'src/app/model/participant.model';
+import { IPaymentMethod } from 'src/app/model/payment-method.model';
 import { EventsService } from '../../events.service';
 
 @Component({
@@ -16,6 +17,7 @@ import { EventsService } from '../../events.service';
 export class EventComponent implements OnInit {
   activeRoute: string = '';
   eventId: number = -1;
+  paymentMethods: IPaymentMethod[] = [];
 
   event: IEvent = {
     date: new Date(),
@@ -36,6 +38,7 @@ export class EventComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEvent();
+    this.getPaymentMethods();
   }
 
   getEvent() {
@@ -44,6 +47,12 @@ export class EventComponent implements OnInit {
     this.eventService.getEventById(+eventId).subscribe((event) => {
       this.event = event;
       this.eventId = event.id;
+    });
+  }
+
+  getPaymentMethods() {
+    this.eventService.getPaymentMethods().subscribe((methods) => {
+      this.paymentMethods = methods;
     });
   }
 

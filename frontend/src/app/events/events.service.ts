@@ -9,6 +9,7 @@ import {
   IParticipantCitizenAdd,
 } from '../model/participant-add.model';
 import { IParticipant } from '../model/participant.model';
+import { IPaymentMethod } from '../model/payment-method.model';
 
 @Injectable({
   providedIn: 'root',
@@ -87,5 +88,9 @@ export class EventsService {
     participant: IParticipant
   ): Observable<IParticipant> {
     return this.backendService.updateParticipantInEvent(eventId, participant);
+  }
+
+  getPaymentMethods(): Observable<IPaymentMethod[]> {
+    return this.backendService.getPaymentMethods();
   }
 }
