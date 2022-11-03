@@ -25,23 +25,7 @@ public class EventController {
 
     @GetMapping("/events")
     public Set<Event> events(@RequestParam(value = "event", required = false) String date) {
-        //TODO: Move this to service class, controller should not have this logic
-        if (date != null) {
-            switch (date) {
-                case "before" -> {
-                    return this.manager.findEventsAfterToday();
-                }
-                case "after" -> {
-                    return this.manager.findEventsBeforeToday();
-                }
-                default -> {
-                    return new HashSet<>();
-                }
-            }
-        } else {
-            return new HashSet<>();
-        }
-
+        return this.manager.findEvents(date);
     }
 
     @GetMapping("/events/{id}")

@@ -39,12 +39,8 @@ public class EventManager {
         this.eventService.deleteEvent(eventId);
     }
 
-    public Set<Event> findEventsBeforeToday() {
-        return this.eventService.findEventsBeforeToday();
-    }
-
-    public Set<Event> findEventsAfterToday() {
-        return this.eventService.findEventsAfterToday();
+    public Set<Event> findEvents(String beforeAfterDateString) {
+        return this.eventService.findEvents(beforeAfterDateString);
     }
 
     public Participant addParticipantToEvent(Long eventId, CreateParticipantDto createParticipantDto) {

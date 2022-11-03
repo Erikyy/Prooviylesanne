@@ -6,13 +6,13 @@ import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.repositories.ParticipantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
 public class DomainParticipantRepository implements ParticipantRepository {
 
     private DbParticipantRepository participantRepository;

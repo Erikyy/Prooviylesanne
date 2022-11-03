@@ -55,13 +55,20 @@ public class EventService {
 
     }
 
-    public Set<Event> findEventsBeforeToday() {
-        return this.eventRepository.findBeforeDate(new Date());
+    public Set<Event> findEvents(String dateBeforeAfter) {
+        if (dateBeforeAfter == null) {
+            return this.eventRepository.findAll();
+        } else {
+            if (dateBeforeAfter.equals("before")) {
+                return this.eventRepository.findBeforeDate(new Date());
+            } else if (dateBeforeAfter.equals("after")) {
+                return this.eventRepository.findAfterDate(new Date());
+            } else {
+                return this.eventRepository.findAll();
+            }
+        }
     }
 
-    public Set<Event> findEventsAfterToday() {
-        return this.eventRepository.findAfterDate(new Date());
-    }
 
 
     public Participant addParticipantToEvent(Long eventId, Participant participant) {

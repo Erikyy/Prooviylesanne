@@ -10,6 +10,8 @@ public interface EventRepository {
 
     Optional<Event> findById(Long id);
 
+    Set<Event> findAll();
+
     Set<Event> findBeforeDate(Date date);
 
     Set<Event> findAfterDate(Date date);

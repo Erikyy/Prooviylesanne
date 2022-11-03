@@ -5,14 +5,14 @@ import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.repositories.EventRepository;
 import ee.erik.backend.infrastructure.persistance.repositories.DbEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
 public class DomainEventRepository implements EventRepository {
 
     private DbEventRepository eventRepository;
@@ -30,6 +30,11 @@ public class DomainEventRepository implements EventRepository {
         } else {
             return Optional.of(dbEvent.get().toEvent());
         }
+    }
+
+    @Override
+    public Set<Event> findAll() {
+        return this.eventRepository.findAllSet().stream().map(EventEntity::toEvent).collect(Collectors.toSet());
     }
 
     @Override

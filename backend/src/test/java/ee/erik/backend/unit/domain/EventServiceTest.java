@@ -1,4 +1,4 @@
-package core.unit.domain;
+package ee.erik.backend.unit.domain;
 
 
 import ee.erik.backend.domain.entities.Event;
@@ -188,6 +188,8 @@ public class EventServiceTest {
         Event expectedEvent = new Event();
         expectedEvent.setId(1L);
         expectedEvent.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
+
+        expectedEvent.setParticipants(Set.of(participant));
 
         given(this.eventRepository.findById(1L)).willReturn(Optional.of(expectedEvent));
         given(this.participantRepository.findById(1L)).willReturn(Optional.of(participant));

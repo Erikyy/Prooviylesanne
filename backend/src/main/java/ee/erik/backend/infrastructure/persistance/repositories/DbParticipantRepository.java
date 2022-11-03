@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Set;
 
-@Repository
+
 public interface DbParticipantRepository extends CrudRepository<ParticipantEntity, Long> {
 
     @Query("select * from participant where p_event_id = :id")

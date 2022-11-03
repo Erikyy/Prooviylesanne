@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.Set;
 
-@Repository
+
 public interface DbEventRepository extends CrudRepository<EventEntity, Long> {
 
     //find all events that have already happened
@@ -19,4 +19,7 @@ public interface DbEventRepository extends CrudRepository<EventEntity, Long> {
     //find future events
     @Query("select * from event where e_date <= :in_date")
     Set<EventEntity> findAllAfterDate(@Param("in_date") Date date);
+
+    @Query("select * from event")
+    Set<EventEntity> findAllSet();
 }
