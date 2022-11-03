@@ -17,21 +17,14 @@ import ee.erik.backend.infrastructure.persistance.entities.participant.PaymentMe
 import ee.erik.backend.infrastructure.persistance.repositories.DbEventRepository;
 import ee.erik.backend.infrastructure.persistance.repositories.DbParticipantRepository;
 import ee.erik.backend.infrastructure.persistance.repositories.DbPaymentMethodRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -41,7 +34,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,11 +46,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EventAndParticipantIntegrationTest {
+public class EverythingIntegrationTest {
 
     @Container
-    static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:14")
-            .withReuse(true);
+    static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:14");
 
 
     @DynamicPropertySource
@@ -124,6 +115,8 @@ public class EventAndParticipantIntegrationTest {
         eventEntity.setInfo("Blah blah blah");
 
         this.dbEventRepository.save(eventEntity);
+
+        assertThat(this.eventRepository.findAfterDate(new Date())).isNotEmpty();
 
         CitizenEntity citizenEntity = new CitizenEntity();
         citizenEntity.setInfo("info");
