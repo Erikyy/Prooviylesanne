@@ -68,6 +68,7 @@ public class EventAndParticipantIntegrationTest {
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.username", container::getUsername);
         registry.add("spring.datasource.password", container::getPassword);
+        //registry.add("spring.datasource.driver-class-name", () -> "org.testcontainers.jdbc.ContainerDatabaseDriver");
     }
     @Autowired
     private MockMvc mockMvc;
@@ -116,7 +117,13 @@ public class EventAndParticipantIntegrationTest {
 
         assertThat(this.paymentMethodManager.findAll()).isNotEmpty();
 
-        EventEntity eventEntity = this.dbEventRepository.save(new EventEntity(1L, "new", date, "", "", new HashSet<>()));
+        EventEntity eventEntity = new EventEntity();
+        eventEntity.setDate(date);
+        eventEntity.setName("EventName");
+        eventEntity.setLocation("Location");
+        eventEntity.setInfo("Blah blah blah");
+
+        this.dbEventRepository.save(eventEntity);
 
         CitizenEntity citizenEntity = new CitizenEntity();
         citizenEntity.setInfo("info");
