@@ -201,23 +201,12 @@ public class EverythingIntegrationTest {
         assertThat(participant).isNotNull();
         assertThat(participant).isEqualTo(savedParticipant.toParticipant());
 
-        CreateCitizenDto createCitizenDto = new CreateCitizenDto();
-        createCitizenDto.setLastName("Test 3334");
-        createCitizenDto.setInfo("trtrsdfsds");
-        createCitizenDto.setIdNumber(2324324L);
+        Participant updateParticipant = savedParticipant.toParticipant();
 
-        CreateParticipantDto createParticipantDto = new CreateParticipantDto();
-        createParticipantDto.setPaymentMethodId(savedParticipant.getId());
-        createParticipantDto.setBusiness(null);
-        createParticipantDto.setCitizen(
-            createCitizenDto
-        );
-        createParticipantDto.setName("New name");
-        createParticipantDto.setId(savedParticipant.getId());
+        participant.setName("New neme");
 
-        ///TODO: This fails, fix tomorrow
         MvcResult participant_update_result = mockMvc.perform(put("/api/v1/events/{eventId}/participants/{participantId}", newSavedEventEntity.getId(), savedParticipant.getId())
-                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(createParticipantDto)))
+                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(updateParticipant)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
