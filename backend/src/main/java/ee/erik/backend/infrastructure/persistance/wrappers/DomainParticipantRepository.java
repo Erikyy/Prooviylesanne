@@ -2,15 +2,12 @@ package ee.erik.backend.infrastructure.persistance.wrappers;
 
 import ee.erik.backend.infrastructure.persistance.entities.ParticipantEntity;
 import ee.erik.backend.infrastructure.persistance.repositories.DbParticipantRepository;
-import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.repositories.ParticipantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Repository
 public class DomainParticipantRepository implements ParticipantRepository {
@@ -30,11 +27,6 @@ public class DomainParticipantRepository implements ParticipantRepository {
         } else {
             return Optional.of(participantEntity.get().toParticipant());
         }
-    }
-
-    @Override
-    public Set<Participant> findParticipantsByEvent(Event event) {
-        return this.participantRepository.findAllByEventId(event.getId()).stream().map(ParticipantEntity::toParticipant).collect(Collectors.toSet());
     }
 
     @Override

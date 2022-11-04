@@ -1,9 +1,10 @@
 package ee.erik.backend.integration.repository;
 
+import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.repositories.EventRepository;
 import ee.erik.backend.infrastructure.persistance.entities.EventEntity;
 import ee.erik.backend.infrastructure.persistance.repositories.DbEventRepository;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -69,11 +72,35 @@ public class EventRepositoryIntegrationTest {
 
     @Test
     public void shouldListEventsBeforeDate() {
+        Set<EventEntity> dbEventEntities =  this.dbEventRepository.findAllBeforeDate(new Date());
+        Set<Event> eventEntities = this.eventRepository.findAllBeforeDate(new Date());
 
+        assertThat(dbEventEntities).isNotEmpty();
+        assertThat(eventEntities).isNotEmpty();
+
+        Set<EventEntity> convertedEventEntities = eventEntities.stream().map(EventEntity::toEntity).collect(Collectors.toSet());
+
+        // get first event and compare
+        assertThat(convertedEventEntities.stream().findFirst()).isPresent();
+        assertThat(dbEventEntities.stream().findFirst()).isPresent();
+
+        assertThat(convertedEventEntities.stream().findFirst().get()).isEqualTo(dbEventEntities.stream().findFirst().get());
     }
 
     @Test
     public void shouldListEventsAfterDate() {
+        Set<EventEntity> dbEventEntities =  this.dbEventRepository.findAllAfterDate(new Date());
+        Set<Event> eventEntities = this.eventRepository.findAllAfterDate(new Date());
 
+        assertThat(dbEventEntities).isNotEmpty();
+        assertThat(eventEntities).isNotEmpty();
+
+        Set<EventEntity> convertedEventEntities = eventEntities.stream().map(EventEntity::toEntity).collect(Collectors.toSet());
+
+        // get first event and compare
+        assertThat(convertedEventEntities.stream().findFirst()).isPresent();
+        assertThat(dbEventEntities.stream().findFirst()).isPresent();
+
+        assertThat(convertedEventEntities.stream().findFirst().get()).isEqualTo(dbEventEntities.stream().findFirst().get());
     }
 }

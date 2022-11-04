@@ -11,6 +11,4 @@ import java.util.Set;
 
 public interface DbParticipantRepository extends CrudRepository<ParticipantEntity, Long> {
 
-    @Query("select * from participant where p_event_id = :id")
-    Set<ParticipantEntity> findAllByEventId(@Param("id") Long id);
 }

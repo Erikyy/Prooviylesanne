@@ -10,8 +10,6 @@ public interface ParticipantRepository {
 
     Optional<Participant> findById(Long id);
 
-    Set<Participant> findParticipantsByEvent(Event event);
-
     void delete(Participant participant);
 
     Participant save(Participant participant);

@@ -12,9 +12,9 @@ public interface EventRepository {
 
     Set<Event> findAll();
 
-    Set<Event> findBeforeDate(Date date);
+    Set<Event> findAllBeforeDate(Date date);
 
-    Set<Event> findAfterDate(Date date);
+    Set<Event> findAllAfterDate(Date date);
 
     void delete(Event event);
 

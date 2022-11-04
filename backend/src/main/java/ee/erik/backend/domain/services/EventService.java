@@ -9,9 +9,7 @@ import ee.erik.backend.domain.services.exceptions.DomainNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -60,9 +58,9 @@ public class EventService {
             return this.eventRepository.findAll();
         } else {
             if (dateBeforeAfter.equals("before")) {
-                return this.eventRepository.findBeforeDate(new Date());
+                return this.eventRepository.findAllBeforeDate(new Date());
             } else if (dateBeforeAfter.equals("after")) {
-                return this.eventRepository.findAfterDate(new Date());
+                return this.eventRepository.findAllAfterDate(new Date());
             } else {
                 return this.eventRepository.findAll();
             }

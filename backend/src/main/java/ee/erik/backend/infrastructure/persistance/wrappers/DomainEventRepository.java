@@ -38,12 +38,12 @@ public class DomainEventRepository implements EventRepository {
     }
 
     @Override
-    public Set<Event> findBeforeDate(Date date) {
+    public Set<Event> findAllBeforeDate(Date date) {
         return this.eventRepository.findAllBeforeDate(date).stream().map(EventEntity::toEvent).collect(Collectors.toSet());
     }
 
     @Override
-    public Set<Event> findAfterDate(Date date) {
+    public Set<Event> findAllAfterDate(Date date) {
         return this.eventRepository.findAllAfterDate(date).stream().map(EventEntity::toEvent).collect(Collectors.toSet());
     }
 
