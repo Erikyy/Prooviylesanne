@@ -16,6 +16,10 @@
 
 ## Andmebaas
 
+Andmebaasi diagramm on näidatud selles pildis:
+
+![Database structure](./db-schema.png)
+
 ## Backend
 
 ### Kausta struktuur ja rollid

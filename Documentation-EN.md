@@ -16,6 +16,10 @@
 
 ## Database
 
+The database diagram is shown in this image:
+
+![Database structure](./db-schema.png)
+
 ## Backend
 
 ### Folder structure and roles
