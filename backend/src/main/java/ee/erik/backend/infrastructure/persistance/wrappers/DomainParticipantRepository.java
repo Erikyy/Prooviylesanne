@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public class DomainParticipantRepository implements ParticipantRepository {
 
-    private DbParticipantRepository participantRepository;
+    private final DbParticipantRepository participantRepository;
 
     @Autowired
     public DomainParticipantRepository(DbParticipantRepository participantRepository) {
@@ -22,11 +22,7 @@ public class DomainParticipantRepository implements ParticipantRepository {
     @Override
     public Optional<Participant> findById(Long id) {
         Optional<ParticipantEntity> participantEntity = this.participantRepository.findById(id);
-        if (participantEntity.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of(participantEntity.get().toParticipant());
-        }
+        return participantEntity.map(ParticipantEntity::toParticipant);
     }
 
     @Override

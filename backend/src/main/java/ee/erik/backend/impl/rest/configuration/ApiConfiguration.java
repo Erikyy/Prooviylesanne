@@ -1,5 +1,7 @@
 package ee.erik.backend.impl.rest.configuration;
 
+import org.springdoc.core.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -15,5 +17,13 @@ public class ApiConfiguration implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedHeaders("*")
                 .allowedMethods("*");
+    }
+
+    @Bean
+    public GroupedOpenApi packageApi() {
+        return GroupedOpenApi.builder()
+                .group("Backend API documentation/dokumentatsioon")
+                .packagesToScan("ee.erik.backend")
+                .build();
     }
 }

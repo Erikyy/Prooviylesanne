@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Repository
 public class DomainEventRepository implements EventRepository {
 
-    private DbEventRepository eventRepository;
+    private final DbEventRepository eventRepository;
 
     @Autowired
     public DomainEventRepository(DbEventRepository dbEventRepository) {
@@ -25,11 +25,7 @@ public class DomainEventRepository implements EventRepository {
     @Override
     public Optional<Event> findById(Long id) {
         Optional<EventEntity> dbEvent = this.eventRepository.findById(id);
-        if(dbEvent.isEmpty()) {
-            return Optional.empty();
-        } else {
-            return Optional.of(dbEvent.get().toEvent());
-        }
+        return dbEvent.map(EventEntity::toEvent);
     }
 
     @Override

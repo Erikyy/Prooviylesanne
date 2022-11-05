@@ -5,6 +5,7 @@ import ee.erik.backend.application.dto.read.*;
 import ee.erik.backend.application.dto.update.UpdateBusinessDto;
 import ee.erik.backend.application.dto.update.UpdateCitizenDto;
 import ee.erik.backend.application.dto.update.UpdateParticipantDto;
+import ee.erik.backend.application.dto.update.UpdatePaymentMethodDto;
 import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.entities.participant.Business;
@@ -137,6 +138,10 @@ public class Converters {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setMethod(createPaymentMethodDto.getMethod());
         return paymentMethod;
+    }
+
+    public static PaymentMethod convertUpdatePaymentMethodDtoToPaymentMethod(Long id, UpdatePaymentMethodDto updatePaymentMethodDto) {
+        return new PaymentMethod(id, updatePaymentMethodDto.getMethod());
     }
 
 }

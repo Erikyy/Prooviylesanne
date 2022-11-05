@@ -2,14 +2,23 @@ package ee.erik.backend.impl.rest;
 
 import ee.erik.backend.application.dto.create.CreatePaymentMethodDto;
 import ee.erik.backend.application.dto.read.PaymentMethodDto;
+import ee.erik.backend.application.dto.update.UpdatePaymentMethodDto;
 import ee.erik.backend.application.managers.PaymentMethodManager;
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
+import ee.erik.backend.domain.entities.Error;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/payment_methods")
+@Tag(name = "Payment methods / Maksmise viisid", description = "Payment methods API / Maksmiste viiside API")
 public class PaymentMethodController {
 
     private PaymentMethodManager paymentMethodManager;
@@ -18,17 +27,49 @@ public class PaymentMethodController {
         this.paymentMethodManager = paymentMethodManager;
     }
 
-    @GetMapping("/payment_methods")
+    @Operation(summary = "List all payment methods", description = "Returns all payment methods.", tags = {"PaymentMethod"})
+    @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = PaymentMethodDto.class))))
+    @GetMapping(produces = { "application/json" })
     public Set<PaymentMethodDto> findAll() {
         return this.paymentMethodManager.findAll();
     }
 
-    @PostMapping("/payment_methods")
+    @Operation(summary = "Get payment method by id / Tagastab maksmisviisi id kaudu", description = "Returns a payment method by id. / Tagastab maksmisviisi id kaudu.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PaymentMethodDto.class))),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = Error.class))),
+    })
+    @GetMapping(path = "/{id}", produces = { "application/json" })
+    public PaymentMethodDto findById(@PathVariable Long id) {
+        return this.paymentMethodManager.findById(id);
+    }
+
+    @Operation(summary = "Create new payment method / Lisab uue maksmise viisi", description = "Creates new payment method / Loob uue maksmise viisi")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PaymentMethodDto.class))),
+    })
+    @PostMapping(produces = { "application/json" })
     public PaymentMethodDto createPaymentMethod(@RequestBody CreatePaymentMethodDto createPaymentMethodDto) {
         return this.paymentMethodManager.createPaymentMethod(createPaymentMethodDto);
     }
 
-    @DeleteMapping("/payment_methods/{id}")
+
+    @Operation(summary = "Updates payment method / Uuendab maksmis viisi", description = "Updates payment method. / Uuendab maksmis viisi.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = Error.class))),
+    })
+    @PutMapping(path = "/{id}", produces = { "application/json" })
+    public PaymentMethodDto updatePaymentMethod(@PathVariable Long id, @RequestBody UpdatePaymentMethodDto updatePaymentMethodDto) {
+        return this.paymentMethodManager.updatePaymentMethodDto(id, updatePaymentMethodDto);
+    }
+
+    @Operation(summary = "Deletes payment method / Kustutab maksmis viisi", description = "Deletes payment method / Kustutab maksmis viisi")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PaymentMethodDto.class))),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = Error.class))),
+    })
+    @DeleteMapping(path = "/{id}", produces = { "application/json" })
     public void deletePaymentMethod(Long id) {
         this.paymentMethodManager.deletePaymentMethod(id);
     }

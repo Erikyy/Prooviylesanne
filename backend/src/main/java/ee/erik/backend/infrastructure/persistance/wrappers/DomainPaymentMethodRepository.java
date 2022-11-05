@@ -38,6 +38,7 @@ public class DomainPaymentMethodRepository implements PaymentMethodRepository {
 
     @Override
     public Optional<PaymentMethod> findById(Long id) {
-        return this.dbPaymentMethodRepository.findById(id);
+        Optional<PaymentMethodEntity> paymentMethodEntity = this.dbPaymentMethodRepository.findById(id);
+        return paymentMethodEntity.map(PaymentMethodEntity::toPaymentMethod);
     }
 }
