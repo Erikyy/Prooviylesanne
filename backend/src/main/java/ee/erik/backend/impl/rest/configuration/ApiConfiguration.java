@@ -22,7 +22,7 @@ public class ApiConfiguration implements WebMvcConfigurer {
     @Bean
     public GroupedOpenApi packageApi() {
         return GroupedOpenApi.builder()
-                .group("Backend API documentation/dokumentatsioon")
+                .group("Backend")
                 .packagesToScan("ee.erik.backend")
                 .build();
     }

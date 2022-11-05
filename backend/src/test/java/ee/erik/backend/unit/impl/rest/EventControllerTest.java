@@ -91,7 +91,7 @@ public class EventControllerTest {
 
         String json = result.getResponse().getContentAsString();
 
-        Event[] res = new ObjectMapper().readValue(json, Event[].class);
+        EventDto[] res = new ObjectMapper().readValue(json, EventDto[].class);
 
         assertEquals(res[0], this.testEvent);
     }
@@ -108,7 +108,7 @@ public class EventControllerTest {
 
         String json = result.getResponse().getContentAsString();
 
-        Event res = new ObjectMapper().readValue(json, Event.class);
+        EventDto res = new ObjectMapper().readValue(json, EventDto.class);
 
         assertEquals(res, this.testEvent);
     }
@@ -131,7 +131,7 @@ public class EventControllerTest {
 
         String json = result.getResponse().getContentAsString();
 
-        Event res = new ObjectMapper().readValue(json, Event.class);
+        EventDto res = new ObjectMapper().readValue(json, EventDto.class);
 
         assertEquals(res, this.testEvent);
     }
@@ -162,7 +162,7 @@ public class EventControllerTest {
 
         String json = result.getResponse().getContentAsString();
 
-        Participant[] res = new ObjectMapper().readValue(json, Participant[].class);
+        ParticipantDto[] res = new ObjectMapper().readValue(json, ParticipantDto[].class);
 
         assertEquals(this.testEvent.getParticipants(), Set.of(res));
     }
@@ -179,7 +179,7 @@ public class EventControllerTest {
 
         String json = result.getResponse().getContentAsString();
 
-        Participant res = new ObjectMapper().readValue(json, Participant.class);
+        ParticipantDto res = new ObjectMapper().readValue(json, ParticipantDto.class);
 
         assertEquals(this.participant, res);
     }
@@ -205,7 +205,7 @@ public class EventControllerTest {
 
         String json = result.getResponse().getContentAsString();
 
-        Participant res = new ObjectMapper().readValue(json, Participant.class);
+        ParticipantDto res = new ObjectMapper().readValue(json, ParticipantDto.class);
 
         assertEquals(this.participant, res);
     }
@@ -222,14 +222,14 @@ public class EventControllerTest {
         given(this.eventManager.updateParticipantInEvent(1L, 1L, createParticipantDto)).willReturn(this.participant);
 
         MvcResult result = mockMvc.perform(put("/api/v1/events/1/participants/1")
-                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(this.participant)))
+                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(createParticipantDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
 
         String json = result.getResponse().getContentAsString();
 
-        Participant res = new ObjectMapper().readValue(json, Participant.class);
+        ParticipantDto res = new ObjectMapper().readValue(json, ParticipantDto.class);
 
         assertEquals(this.participant, res);
     }

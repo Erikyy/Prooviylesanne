@@ -19,6 +19,8 @@ export class EventComponent implements OnInit {
   eventId: number = -1;
   paymentMethods: IPaymentMethod[] = [];
 
+  currentDate: Date = new Date();
+
   event: IEvent = {
     date: new Date(),
     name: '',
@@ -71,12 +73,7 @@ export class EventComponent implements OnInit {
       .removeParticipantFromEvent(this.eventId, participantId)
       .subscribe({
         complete: () => {
-          const url = this.router.url;
-          this.router
-            .navigateByUrl('.', { skipLocationChange: true })
-            .then(() => {
-              this.router.navigateByUrl(url);
-            });
+          this.ngOnInit();
         },
         error: () => {
           alert('Osaleja eemaldamine põrus');
@@ -85,16 +82,13 @@ export class EventComponent implements OnInit {
   }
 
   onSubmit(participant: IParticipantAdd) {
+    console.log(participant);
+
     this.eventService
       .addParticipantToEvent(this.eventId, participant)
       .subscribe({
         complete: () => {
-          const url = this.router.url;
-          this.router
-            .navigateByUrl('.', { skipLocationChange: true })
-            .then(() => {
-              this.router.navigateByUrl(url);
-            });
+          this.ngOnInit();
         },
         error: () => {
           alert('Osaleja lisamine põrus');

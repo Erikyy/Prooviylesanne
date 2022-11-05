@@ -48,7 +48,9 @@ public class EventManager {
     }
 
     public ParticipantDto updateParticipantInEvent(Long eventId, Long participantId, UpdateParticipantDto updateParticipantDto) {
-        return Converters.convertToParticipantDto(this.eventService.updateParticipantInEvent(eventId, Converters.convertUpdateParticipantDtoToParticipant(updateParticipantDto)));
+        Participant participant = Converters.convertUpdateParticipantDtoToParticipant(updateParticipantDto);
+        participant.setId(participantId);
+        return Converters.convertToParticipantDto(this.eventService.updateParticipantInEvent(eventId, participant));
     }
 
     public void deleteParticipantFromEvent(Long eventId, Long participantId) {

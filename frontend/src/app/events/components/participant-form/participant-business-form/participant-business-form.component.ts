@@ -64,12 +64,13 @@ export class ParticipantBusinessFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('submit');
-
     let { info, name, numOfParticipants, paymentMethod, regCode } =
       this.participantForm.value;
+    console.log(this.participantForm.value);
 
     if (info && name && numOfParticipants && paymentMethod && regCode) {
+      console.log('submit');
+
       if (this.participant.business) {
         this.editSubmit.emit({
           id: this.participant.id,

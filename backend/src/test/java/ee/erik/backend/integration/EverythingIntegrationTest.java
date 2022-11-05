@@ -2,6 +2,13 @@ package ee.erik.backend.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ee.erik.backend.application.dto.create.CreateEventDto;
+import ee.erik.backend.application.dto.create.CreateParticipantDto;
+import ee.erik.backend.application.dto.read.EventDto;
+import ee.erik.backend.application.dto.read.ParticipantDto;
+import ee.erik.backend.application.dto.read.PaymentMethodDto;
+import ee.erik.backend.application.dto.update.UpdateCitizenDto;
+import ee.erik.backend.application.dto.update.UpdateParticipantDto;
+import ee.erik.backend.application.dto.utils.Converters;
 import ee.erik.backend.application.managers.EventManager;
 import ee.erik.backend.application.managers.PaymentMethodManager;
 import ee.erik.backend.domain.entities.Event;
@@ -35,7 +42,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -92,10 +101,6 @@ public class EverythingIntegrationTest {
     @Autowired
     private PaymentMethodService paymentMethodService;
 
-    @Test
-    public void dbTest() {
-        System.out.println(container.getJdbcUrl());
-    }
 
     @Test
     public void shouldCreateEventWithParticipantsAndPaymentMethod() throws Exception {
@@ -135,7 +140,6 @@ public class EverythingIntegrationTest {
         EventEntity newSavedEventEntity = this.dbEventRepository.save(savedEventEntity);
 
         assertThat(newSavedEventEntity.getParticipantEntities().stream().findFirst()).isPresent();
-        ParticipantEntity savedParticipant = newSavedEventEntity.getParticipantEntities().stream().findFirst().get();
 
         //------------------------------------------------------------------
 
@@ -147,6 +151,58 @@ public class EverythingIntegrationTest {
 
         assertThat(this.eventManager.findEvents(null)).isNotEmpty();
 
+        //------------------------------------------------------------------
+
+        assertThat(this.eventRepository.findAll()).isNotEmpty();
+        Optional<Event> event = this.eventRepository.findAll().stream().findFirst();
+        assertThat(event).isPresent();
+
+        assertThat(event.get().getParticipants().stream().findFirst()).isPresent();
+        Optional<Participant> participant = this.participantRepository.findById(event.get().getParticipants().stream().findFirst().get().getId());
+        assertThat(participant).isPresent();
+
+        MvcResult participant_result = mockMvc.perform(get("/api/v1/events/{eventId}/participants/{participantId}", event.get().getId(), participant.get().getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        String participantJsonRes = participant_result.getResponse().getContentAsString();
+
+        ParticipantDto participantDto = new ObjectMapper().readValue(participantJsonRes, ParticipantDto.class);
+
+        assertThat(participant).isNotNull();
+        assertThat(participantDto).isEqualTo(Converters.convertToParticipantDto(participant.get()));
+
+        UpdateParticipantDto updateParticipant = new UpdateParticipantDto(
+                participant.get().getPaymentMethod().getId(),
+                participant.get().getName(),
+                new UpdateCitizenDto(
+                        participant.get().getCitizen().getLastName(),
+                        participant.get().getCitizen().getIdNumber(),
+                        participant.get().getCitizen().getInfo()
+                ),
+                null
+        );
+
+        updateParticipant.setName("New name");
+
+        MvcResult participant_update_result = mockMvc.perform(put("/api/v1/events/{eventId}/participants/{participantId}", event.get().getId(), participantDto.getId())
+                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(updateParticipant)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        String participantJsonResUpdate = participant_update_result.getResponse().getContentAsString();
+
+        ParticipantDto updated_participant = new ObjectMapper().readValue(participantJsonResUpdate, ParticipantDto.class);
+
+        assertThat(participant).isNotNull();
+        assertThat(participant.get().getName()).isNotEqualTo(updated_participant.getName());
+    }
+
+    @Test
+    public void shouldCreateEventAndReturn() throws Exception {
         CreateEventDto eventDto = new CreateEventDto();
         eventDto.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
         eventDto.setName("test");
@@ -158,8 +214,6 @@ public class EverythingIntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-
-
         MvcResult result = mockMvc.perform(get("/api/v1/events")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -168,11 +222,13 @@ public class EverythingIntegrationTest {
 
         String json = result.getResponse().getContentAsString();
 
-        Event[] res = new ObjectMapper().readValue(json, Event[].class);
+        EventDto[] res = new ObjectMapper().readValue(json, EventDto[].class);
         assertThat(this.eventRepository.findAll()).isNotEmpty();
-        assertThat(Set.of(res)).isEqualTo(this.eventRepository.findAll());
+        assertThat(Set.of(res)).isEqualTo(this.eventRepository.findAll().stream().map(Converters::convertToEventDto).collect(Collectors.toSet()));
+    }
 
-
+    @Test
+    public void shouldReturnPaymentMethods() throws Exception {
         MvcResult payment_methods_res = mockMvc.perform(get("/api/v1/payment_methods")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -181,45 +237,26 @@ public class EverythingIntegrationTest {
 
         String resJson = payment_methods_res.getResponse().getContentAsString();
 
-        PaymentMethod[] res_payment_methods = new ObjectMapper().readValue(resJson, PaymentMethod[].class);
+        PaymentMethodDto[] res_payment_methods = new ObjectMapper().readValue(resJson, PaymentMethodDto[].class);
 
         assertThat(this.paymentMethodService.findAll()).isNotEmpty();
-        assertThat(this.paymentMethodService.findAll()).isEqualTo(Set.of(res_payment_methods));
+        assertThat(this.paymentMethodService.findAll().stream().map(Converters::convertPaymentMethodToPaymentMethodDto).collect(Collectors.toSet())).isEqualTo(Set.of(res_payment_methods));
+    }
 
-        MvcResult participant_result = mockMvc.perform(get("/api/v1/events/{eventId}/participants/{participantId}", newSavedEventEntity.getId(), savedParticipant.getId())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
+    @Test
+    public void shouldDeleteParticipantAndReturnEmpty() throws Exception {
 
-        String participantJsonRes = participant_result.getResponse().getContentAsString();
+        Optional<Event> event = this.eventRepository.findAll().stream().findFirst();
+        assertThat(event).isPresent();
 
-        Participant participant = new ObjectMapper().readValue(participantJsonRes, Participant.class);
+        Optional<Participant> participant = this.participantRepository.findById(1L);
+        assertThat(participant).isPresent();
 
-        assertThat(participant).isNotNull();
-        assertThat(participant).isEqualTo(savedParticipant.toParticipant());
-
-        Participant updateParticipant = savedParticipant.toParticipant();
-
-        participant.setName("New neme");
-
-        MvcResult participant_update_result = mockMvc.perform(put("/api/v1/events/{eventId}/participants/{participantId}", newSavedEventEntity.getId(), savedParticipant.getId())
-                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(updateParticipant)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
-
-        String participantJsonResUpdate = participant_update_result.getResponse().getContentAsString();
-
-        Participant updated_participant = new ObjectMapper().readValue(participantJsonResUpdate, Participant.class);
-
-        assertThat(participant).isNotNull();
-        assertThat(participant).isNotEqualTo(updated_participant);
-
-        mockMvc.perform(delete("/api/v1/events/{eventId}/participants/{participantId}", newSavedEventEntity.getId(), savedParticipant.getId())
+        mockMvc.perform(delete("/api/v1/events/{eventId}/participants/{participantId}", event.get().getId(), participant.get().getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
+
 
         assertThat(this.dbParticipantRepository.findAll()).isEmpty();
     }

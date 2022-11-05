@@ -53,6 +53,7 @@
               >
             </td>
             <td
+              *ngIf="event.date > currentDate"
               class="cursor-pointer"
               (click)="removeParticipant(participant.id)"
             >
@@ -63,6 +64,7 @@
       >
     </app-flex-grid>
     <app-participant-form
+      *ngIf="event.date > currentDate"
       [paymentMethods]="paymentMethods"
       (onBackClicked)="onBackClicked()"
       (onSubmit)="onSubmit($event)"

@@ -1,6 +1,7 @@
 package ee.erik.backend.impl.rest;
 
 import ee.erik.backend.application.dto.create.CreateParticipantDto;
+import ee.erik.backend.application.dto.read.ErrorDto;
 import ee.erik.backend.application.dto.read.EventDto;
 import ee.erik.backend.application.dto.read.ParticipantDto;
 import ee.erik.backend.application.dto.read.PaymentMethodDto;
@@ -44,7 +45,7 @@ public class EventController {
     @Operation(summary = "Get event by id / Tagastab ürituse id kaudu", description = "Returns a event by id. / Tagastab ürituse id kaudu.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PaymentMethodDto.class))),
-            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = Error.class))),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
     })
     @GetMapping(path = "/{id}", produces = { "application/json" })
     public EventDto getEventById(@PathVariable Long id) {
@@ -60,36 +61,64 @@ public class EventController {
 
     @Operation(summary = "Deletes an event / Kustutab ürituse", description = "Deletes an event. Only possible for events that haven't taken place / Kustutab ürituse. Ainult võimalik üritustel mis pole veel toimunud.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PaymentMethodDto.class))),
-            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = Error.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden deletion. Returs error with status.", content = @Content(schema = @Schema(implementation = Error.class)))
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
+            @ApiResponse(responseCode = "403", description = "Forbidden deletion. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     })
     @DeleteMapping(path = "/{id}", produces = { "application/json" })
     public void deleteEvent(@PathVariable Long id) {
         this.manager.deleteEvent(id);
     }
 
+    @Operation(summary = "Return all participants regitered to an event by id / Tagastab kõik osalejad regiteeritud üritusele läbi ürituse id", description = "Return all participants regitered to an event by id / Tagastab kõik osalejad regiteeritud üritusele läbi ürituse id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ParticipantDto.class)))),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
+    })
     @GetMapping(path = "/{id}/participants", produces = { "application/json" })
     public Set<ParticipantDto> findAllParticipantsInEvent(@PathVariable Long id) {
         return this.manager.findAllParticipantsInEvent(id);
     }
 
+    @Operation(summary = "Returns single participant in event by id / Tagastab ühe osaleja ürituse id kaudu", description = "Returns single participant in event by id / Tagastab ühe osaleja ürituse id kaudu")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = ParticipantDto.class))),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
+    })
     @GetMapping(path = "/{eventId}/participants/{participantId}", produces = { "application/json" })
     public ParticipantDto findParticipantInEventById(@PathVariable Long eventId, @PathVariable Long participantId) {
         return this.manager.findParticipantInEventById(eventId, participantId);
     }
 
+    @Operation(summary = "Adds a participant to an event / Lisab osaleja üritusse", description = "Adds a participant to an event / Lisab osaleja üritusse. Participants can be added only to events that haven't taken place / Osalejaid saab ainult lisada üritustesse mis pole toimunud")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
+            @ApiResponse(responseCode = "403", description = "Forbidden deletion. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    })
     @PostMapping(path = "/{eventId}/participants", produces = { "application/json" })
     public ParticipantDto addParticipantToEvent(@PathVariable Long eventId, @RequestBody CreateParticipantDto createParticipantDto) {
         System.out.println(createParticipantDto.toString());
         return this.manager.addParticipantToEvent(eventId, createParticipantDto);
     }
 
+    @Operation(summary = "Updates a participant in an event / Uuendab osaleja infot ürituses", description = "Updates a participant in an event / Uuendab osaleja infot ürituses. Participants can be updated only in events that haven't taken place / Osalejaid saab ainult uuendada üritustes mis pole toimunud")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
+            @ApiResponse(responseCode = "403", description = "Forbidden deletion. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    })
     @PutMapping(path = "/{eventId}/participants/{participantId}", produces = { "application/json" })
     public ParticipantDto updateParticipantInEvent(@PathVariable Long eventId, @PathVariable Long participantId, @RequestBody UpdateParticipantDto updateParticipantDto) {
         return this.manager.updateParticipantInEvent(eventId, participantId, updateParticipantDto);
     }
 
+    @Operation(summary = "Deletes a participant in an event / Kustutab osaleja infot ürituses", description = "Deletes a participant in an event / Kustutab osaleja infot ürituses. Participants can be deleted only in events that haven't taken place / Osalejaid saab ainult kustutada üritustes mis pole toimunud")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
+            @ApiResponse(responseCode = "403", description = "Forbidden deletion. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+    })
     @DeleteMapping(path = "/{eventId}/participants/{participantId}", produces = { "application/json" })
     public void deleteParticipantInEvent(@PathVariable Long eventId, @PathVariable Long participantId) {
         this.manager.deleteParticipantFromEvent(eventId, participantId);

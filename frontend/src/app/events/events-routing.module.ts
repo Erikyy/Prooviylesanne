@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFountComponent } from '../page-not-fount/page-not-fount.component';
-import { AddEventComponent, EventsComponent, EventComponent } from './pages/';
-import { ParticipantComponent } from './pages/participant/participant.component';
+import {
+  AddEventPage,
+  EventDetailPage,
+  EventsPage,
+  ParticipantPage,
+} from './pages/';
 
 const routes: Routes = [
   {
     path: '',
-    component: EventsComponent,
+    component: EventsPage,
     title: 'Avaleht',
     data: {
       show: true,
@@ -15,16 +19,16 @@ const routes: Routes = [
   },
   {
     path: 'add-event',
-    component: AddEventComponent,
+    component: AddEventPage,
     title: 'Ürituste lisamine',
     data: {
       show: true,
     },
   },
-  { path: ':id', component: EventComponent },
+  { path: ':id', component: EventDetailPage },
   {
     path: ':id/participant/:pid',
-    component: ParticipantComponent,
+    component: ParticipantPage,
   },
 ];
 

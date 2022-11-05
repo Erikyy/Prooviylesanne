@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EventsService } from '../events.service';
+import { EventsService } from '../../events.service';
 
 @Component({
   selector: 'app-events',

@@ -1,6 +1,7 @@
 package ee.erik.backend.impl.rest;
 
 import ee.erik.backend.application.dto.create.CreatePaymentMethodDto;
+import ee.erik.backend.application.dto.read.ErrorDto;
 import ee.erik.backend.application.dto.read.PaymentMethodDto;
 import ee.erik.backend.application.dto.update.UpdatePaymentMethodDto;
 import ee.erik.backend.application.managers.PaymentMethodManager;
@@ -37,7 +38,7 @@ public class PaymentMethodController {
     @Operation(summary = "Get payment method by id / Tagastab maksmisviisi id kaudu", description = "Returns a payment method by id. / Tagastab maksmisviisi id kaudu.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PaymentMethodDto.class))),
-            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = Error.class))),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
     })
     @GetMapping(path = "/{id}", produces = { "application/json" })
     public PaymentMethodDto findById(@PathVariable Long id) {
@@ -57,7 +58,7 @@ public class PaymentMethodController {
     @Operation(summary = "Updates payment method / Uuendab maksmis viisi", description = "Updates payment method. / Uuendab maksmis viisi.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
-            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = Error.class))),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
     })
     @PutMapping(path = "/{id}", produces = { "application/json" })
     public PaymentMethodDto updatePaymentMethod(@PathVariable Long id, @RequestBody UpdatePaymentMethodDto updatePaymentMethodDto) {
@@ -67,7 +68,7 @@ public class PaymentMethodController {
     @Operation(summary = "Deletes payment method / Kustutab maksmis viisi", description = "Deletes payment method / Kustutab maksmis viisi")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PaymentMethodDto.class))),
-            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = Error.class))),
+            @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
     })
     @DeleteMapping(path = "/{id}", produces = { "application/json" })
     public void deletePaymentMethod(Long id) {
