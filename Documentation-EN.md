@@ -12,7 +12,7 @@
     - [folders](#folders)
     - [Models](#models)
     - [Pages](#pages)
-
+  - [Rest API docs](#rest-api-docs)
 
 ## Database
 
@@ -36,7 +36,6 @@ The main folders in backend are
 Application layer contains DTO's (Data Transfer Objects), EventManager and PaymentMethodManager.
 Managers are interfaced in Impl/Presentation folder.
 
-
 #### domain
 
 Domain folder contains domain entities which are just pure java classes, only use lombok annotations to remove some of the boilerplate code, EventService where most of the business logic is implemented then the exceptions that are thrown at runtime, using global exception handler in infrastructure layer and repository interfaces, those are implemented in infrastructure layer.
@@ -49,7 +48,7 @@ database entity mappers with convertes to domain entites and back and global exc
 #### impl
 
 Implementation folder or presentation folder
-contains rest api implementation using Event manager and PaymentaMethod Manager. Rest api also contains swagger doc where are all rest api routes and methods documented. 
+contains rest api implementation using Event manager and PaymentaMethod Manager. Rest api also contains swagger doc where are all rest api routes and methods documented.
 
 ## Frontend
 
@@ -78,3 +77,7 @@ other routes are defined in events folder.
 - View event details + particpants view + adding - in events folder
 - Participant detail view with update feature - participant folder
 - Main page - index folder inside events folder
+
+## Rest API docs
+
+Rest api docs are located at http://your_ip:yourport/swagger-ui/index.html#/ but can be found in [backend rest implementation](./backend/src/main/java/ee/erik/backend/impl/rest/) controllers annotated with OpenApi annotations.

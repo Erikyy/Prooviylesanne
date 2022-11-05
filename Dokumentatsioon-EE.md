@@ -12,7 +12,7 @@
     - [kaustad](#kaustad)
     - [Mudelid](#mudelid)
     - [Leheküljed](#leheküljed)
-
+  - [Rest API dokumentatsioon](#rest-api-dokumentatsioon)
 
 ## Andmebaas
 
@@ -75,3 +75,7 @@ teised lehed on defineeritud events kaustas.
 - Ürituse vaatamine + osalejate vaade + lisamine - event kaustas
 - Osaleja vaade koos muutmisega - participant kaustas
 - Avaleht - events kausta sees index kaustas
+
+## Rest API dokumentatsioon
+
+Rest api dokumentatsioon asub http://your_ip:yourport/swagger-ui/index.html#/ aga saab ka leida [backend rest implementatsiooni](./backend/src/main/java/ee/erik/backend/impl/rest/) kontrolleritest annoteeritud OpenApi'ga.

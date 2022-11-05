@@ -10,15 +10,16 @@
   - [Jooksutamine](#jooksutamine)
     - [Testimine](#testimine)
 
-
 ## Tehnoloogiad
 
 ### Backend
- - Spring Boot
- - Spring Data Jdbc
- - Testcontainers
- - Flyway
- - Lombok
+
+- Spring Boot
+- Spring Data Jdbc
+- Testcontainers
+- Flyway
+- Lombok
+- Swagger Dokumentatsioon
 
 ### Database
 
@@ -51,19 +52,23 @@ npm run install
 
 On mitu viisi kuidas jooksutada nii backendi kui ka frontendi rakendust. Kõige lihtsam viis on kasutada docker-compose koos docker-compose-full.yml failiga mis sisaldab backendi, frontendi kui ka andmebaasi. Kuid teste sellega ei jooksutata kuna backend kasutab Testcontainers pakki mis nõuab dockerit.
 
-Siin on see käsklus: 
+Siin on see käsklus:
+
 ```
 docker-compose up -f docker-compose-full.yml
 ```
 
-Teine viis on kasutada Integreeritud arenduskeskkonda, aga kõigepealt peab andmebaasi üles sättima kasutades ```docker-compose up``` käsklust. Intellij Idea's on võimalik jooksutada backendi läbi gradle taski või minna rakenduse [põhifaili](./backend/src/main/java/ee/erik/backend/Application.java). Frontendi on ka võimalik jooksutada läbi Intellij Idea keskonna kasutades jooksutamis nuppu (Ainult Ultimate versioon on toetatud selles).
+Teine viis on kasutada Integreeritud arenduskeskkonda, aga kõigepealt peab andmebaasi üles sättima kasutades `docker-compose up` käsklust. Intellij Idea's on võimalik jooksutada backendi läbi gradle taski või minna rakenduse [põhifaili](./backend/src/main/java/ee/erik/backend/Application.java). Frontendi on ka võimalik jooksutada läbi Intellij Idea keskonna kasutades jooksutamis nuppu (Ainult Ultimate versioon on toetatud selles).
 
 Kolmandaks viisik on jooksutada läbi käsurea liidese.
-Backend kaustas jooksuta lihtsalt 
+Backend kaustas jooksuta lihtsalt
+
 ```
 ./gradlew.bat :bootRun
 ```
+
 Windowsi peal või kui on kasutusel linux
+
 ```
 ./gradlew :bootRun
 ```
@@ -73,7 +78,10 @@ Frontendi saab jooksutada frontendi kaustas kasutades
 ```
 npm run start
 ```
+
 käsklust.
+
+Kui backendi rakendus juba jookseb on võimalik leida swagger dokumentatisoon siit: http://your_ip:yourport/swagger-ui/index.html#/, tavaliselt peaks see olema http://localhost:8080/swagger-ui/index.html#/.
 
 ### Testimine
 
@@ -84,8 +92,10 @@ või läbi käsurea liidese
 
 ```
 ./gradlew.bat test -i
-``` 
+```
+
 windowsi peal või kui on kasutusel linux siis
+
 ```
 ./gradlew test -i
 ```
