@@ -1,12 +1,15 @@
 package ee.erik.backend.application.managers;
 
-import ee.erik.backend.application.dto.CreatePaymentMethodDto;
+import ee.erik.backend.application.dto.create.CreatePaymentMethodDto;
+import ee.erik.backend.application.dto.read.PaymentMethodDto;
+import ee.erik.backend.application.dto.utils.Converters;
 import ee.erik.backend.domain.entities.participant.PaymentMethod;
 import ee.erik.backend.domain.services.PaymentMethodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class PaymentMethodManager {
@@ -18,17 +21,15 @@ public class PaymentMethodManager {
         this.paymentMethodService = paymentMethodService;
     }
 
-    public Set<PaymentMethod> findAll() {
-        return this.paymentMethodService.findAll();
+    public Set<PaymentMethodDto> findAll() {
+        return this.paymentMethodService.findAll().stream().map(Converters::convertPaymentMethodToPaymentMethodDto).collect(Collectors.toSet());
     }
 
-    public PaymentMethod createPaymentMethod(CreatePaymentMethodDto createPaymentMethodDto) {
-        PaymentMethod paymentMethod = new PaymentMethod();
-        paymentMethod.setMethod(createPaymentMethodDto.getMethod());
-        return this.paymentMethodService.save(paymentMethod);
+    public PaymentMethodDto createPaymentMethod(CreatePaymentMethodDto createPaymentMethodDto) {
+        return Converters.convertPaymentMethodToPaymentMethodDto(this.paymentMethodService.save(Converters.convertCreatePaymentMethodDtoToPaymentMethod(createPaymentMethodDto)));
     }
 
-    public void deletePaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethodService.delete(paymentMethod);
+    public void deletePaymentMethod(Long paymentMethodId) {
+        this.paymentMethodService.delete(paymentMethodId);
     }
 }

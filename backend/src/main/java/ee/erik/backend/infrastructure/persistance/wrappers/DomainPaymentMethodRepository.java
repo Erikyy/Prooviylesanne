@@ -7,6 +7,7 @@ import ee.erik.backend.infrastructure.persistance.repositories.DbPaymentMethodRe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,5 +34,10 @@ public class DomainPaymentMethodRepository implements PaymentMethodRepository {
     @Override
     public void delete(PaymentMethod paymentMethod) {
         this.dbPaymentMethodRepository.delete(PaymentMethodEntity.toEntity(paymentMethod));
+    }
+
+    @Override
+    public Optional<PaymentMethod> findById(Long id) {
+        return this.dbPaymentMethodRepository.findById(id);
     }
 }

@@ -9,6 +9,8 @@ public interface PaymentMethodRepository {
 
     Set<PaymentMethod> findAll();
 
+    Optional<PaymentMethod> findById(Long id);
+
     PaymentMethod save(PaymentMethod paymentMethod);
 
     void delete(PaymentMethod paymentMethod);

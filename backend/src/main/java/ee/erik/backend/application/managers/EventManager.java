@@ -1,7 +1,10 @@
 package ee.erik.backend.application.managers;
 
-import ee.erik.backend.application.dto.CreateEventDto;
-import ee.erik.backend.application.dto.CreateParticipantDto;
+import ee.erik.backend.application.dto.create.CreateEventDto;
+import ee.erik.backend.application.dto.create.CreateParticipantDto;
+import ee.erik.backend.application.dto.read.*;
+import ee.erik.backend.application.dto.update.UpdateParticipantDto;
+import ee.erik.backend.application.dto.utils.Converters;
 import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.entities.participant.Business;
@@ -12,77 +15,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+/**
+ * This class is used for interfacing outside the application layer, currently only used in impl/presentation folder.
+ */
 @Component
 public class EventManager {
 
-    private EventService eventService;
+    private final EventService eventService;
 
     @Autowired
     public EventManager(EventService eventService) {
         this.eventService = eventService;
     }
 
-    public Event createNewEvent(CreateEventDto createEventDto) {
-        Event event = new Event();
-        event.setName(createEventDto.getName());
-        event.setDate(createEventDto.getDate());
-        event.setLocation(createEventDto.getLocation());
-        event.setInfo(createEventDto.getInfo());
-        event.setParticipants(new HashSet<>());
-        return this.eventService.createNewEvent(event);
+    public EventDto createNewEvent(CreateEventDto createEventDto) {
+        return Converters.convertToEventDto(this.eventService.createNewEvent(Converters.convertEventCreateDtoToEvent(createEventDto)));
     }
 
     public void deleteEvent(Long eventId) {
         this.eventService.deleteEvent(eventId);
     }
 
-    public Set<Event> findEvents(String beforeAfterDateString) {
-        return this.eventService.findEvents(beforeAfterDateString);
+    public Set<EventDto> findEvents(String beforeAfterDateString) {
+        return this.eventService.findEvents(beforeAfterDateString).stream().map(Converters::convertToEventDto).collect(Collectors.toSet());
     }
 
-    public Participant addParticipantToEvent(Long eventId, CreateParticipantDto createParticipantDto) {
-        PaymentMethod paymentMethod = new PaymentMethod();
-        paymentMethod.setId(createParticipantDto.getPaymentMethodId());
-        Participant participant = new Participant();
-        participant.setName(createParticipantDto.getName());
-        participant.setPaymentMethod(paymentMethod);
-
-        if (createParticipantDto.getCitizen() != null) {
-            Citizen citizen = new Citizen();
-            citizen.setInfo(createParticipantDto.getCitizen().getInfo());
-            citizen.setLastName(createParticipantDto.getCitizen().getLastName());
-            citizen.setIdNumber(createParticipantDto.getCitizen().getIdNumber());
-            participant.setCitizen(citizen);
-        } else if (createParticipantDto.getBusiness() != null) {
-            Business business = new Business();
-            business.setNumOfParticipants(createParticipantDto.getBusiness().getNumOfParticipants());
-            business.setRegCode(createParticipantDto.getBusiness().getRegCode());
-            business.setInfo(createParticipantDto.getBusiness().getInfo());
-            participant.setBusiness(business);
-        }
-        return this.eventService.addParticipantToEvent(eventId, participant);
+    public ParticipantDto addParticipantToEvent(Long eventId, CreateParticipantDto createParticipantDto) {
+        return Converters.convertToParticipantDto(this.eventService.addParticipantToEvent(eventId, Converters.convertCreateDtoToParticipant(createParticipantDto)));
     }
 
-    public Participant updateParticipantInEvent(Long eventId, Participant participant) {
-        return this.eventService.updateParticipantInEvent(eventId, participant);
+    public ParticipantDto updateParticipantInEvent(Long eventId, Long participantId, UpdateParticipantDto updateParticipantDto) {
+        return Converters.convertToParticipantDto(this.eventService.updateParticipantInEvent(eventId, Converters.convertUpdateParticipantDtoToParticipant(updateParticipantDto)));
     }
 
     public void deleteParticipantFromEvent(Long eventId, Long participantId) {
         this.eventService.deleteParticipantFromEvent(eventId, participantId);
     }
 
-    public Set<Participant> findAllParticipantsInEvent(Long eventId) {
-        return this.eventService.findAllParticipantsInEvent(eventId);
+    public Set<ParticipantDto> findAllParticipantsInEvent(Long eventId) {
+        return this.eventService.findAllParticipantsInEvent(eventId).stream().map(Converters::convertToParticipantDto).collect(Collectors.toSet());
     }
 
-    public Event getEventById(Long id) {
-        return this.eventService.getEventById(id);
+    public EventDto getEventById(Long id) {
+        return Converters.convertToEventDto(this.eventService.getEventById(id));
     }
 
-    public Participant findParticipantInEventById(Long eventId, Long participantId) {
-        return this.eventService.findParticipantInEventById(eventId, participantId);
+    public ParticipantDto findParticipantInEventById(Long eventId, Long participantId) {
+        return Converters.convertToParticipantDto(this.eventService.findParticipantInEventById(eventId, participantId));
     }
 }

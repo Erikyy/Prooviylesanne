@@ -1,9 +1,17 @@
 package ee.erik.backend.unit.impl.rest;
 
 
-import ee.erik.backend.application.dto.CreateCitizenDto;
-import ee.erik.backend.application.dto.CreateEventDto;
-import ee.erik.backend.application.dto.CreateParticipantDto;
+import ee.erik.backend.application.dto.create.CreateBusinessDto;
+import ee.erik.backend.application.dto.create.CreateCitizenDto;
+import ee.erik.backend.application.dto.create.CreateEventDto;
+import ee.erik.backend.application.dto.create.CreateParticipantDto;
+import ee.erik.backend.application.dto.read.CitizenDto;
+import ee.erik.backend.application.dto.read.EventDto;
+import ee.erik.backend.application.dto.read.ParticipantDto;
+import ee.erik.backend.application.dto.read.PaymentMethodDto;
+import ee.erik.backend.application.dto.update.UpdateBusinessDto;
+import ee.erik.backend.application.dto.update.UpdateCitizenDto;
+import ee.erik.backend.application.dto.update.UpdateParticipantDto;
 import ee.erik.backend.application.managers.EventManager;
 import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
@@ -28,7 +36,6 @@ import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.bind.annotation.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -48,21 +55,21 @@ public class EventControllerTest {
     @MockBean
     private EventManager eventManager;
 
-    private Event testEvent;
+    private EventDto testEvent;
 
-    private Participant participant;
+    private ParticipantDto participant;
 
     @BeforeEach
     public void setup() {
-        this.participant = new Participant(
+        this.participant = new ParticipantDto(
                 1L,
-                new PaymentMethod(1L, "sularaha"),
+                new PaymentMethodDto(1L, "sularaha"),
                 "name",
-                new Citizen(1L, "test" , 1232323L, "test"),
+                new CitizenDto(1L, "test" , 1232323L, "test"),
                 null
         );
 
-        this.testEvent = new Event(
+        this.testEvent = new EventDto(
                 1L,
                 "test",
                 Date.from(LocalDate.now().plusDays(5).atStartOfDay().toInstant(ZoneOffset.UTC)),
@@ -206,7 +213,13 @@ public class EventControllerTest {
     @Test
     public void controllerShouldUpdateParticipantInEvent() throws Exception {
 
-        given(this.eventManager.updateParticipantInEvent(1L, this.participant)).willReturn(this.participant);
+        UpdateParticipantDto createParticipantDto = new UpdateParticipantDto(
+                this.participant.getPaymentMethod().getId(),
+                this.participant.getName(),
+                this.participant.getCitizen() == null ? null : new UpdateCitizenDto(),
+                this.participant.getBusiness() == null ? null : new UpdateBusinessDto()
+        );
+        given(this.eventManager.updateParticipantInEvent(1L, 1L, createParticipantDto)).willReturn(this.participant);
 
         MvcResult result = mockMvc.perform(put("/api/v1/events/1/participants/1")
                         .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(this.participant)))

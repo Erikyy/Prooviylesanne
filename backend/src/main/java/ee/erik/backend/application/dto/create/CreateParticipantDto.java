@@ -1,16 +1,15 @@
-package ee.erik.backend.application.dto;
+package ee.erik.backend.application.dto.create;
 
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.Optional;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateParticipantDto {
-    private Long id;
     private Long paymentMethodId;
     private String name;
-
     private CreateCitizenDto citizen;
     private CreateBusinessDto business;
 

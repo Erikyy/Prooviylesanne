@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * This service class basically manages events and participant, does also date checking and throws exceptions.
+ */
 @Service
 public class EventService {
 

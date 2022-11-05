@@ -1,9 +1,7 @@
 package ee.erik.backend.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ee.erik.backend.application.dto.CreateCitizenDto;
-import ee.erik.backend.application.dto.CreateEventDto;
-import ee.erik.backend.application.dto.CreateParticipantDto;
+import ee.erik.backend.application.dto.create.CreateEventDto;
 import ee.erik.backend.application.managers.EventManager;
 import ee.erik.backend.application.managers.PaymentMethodManager;
 import ee.erik.backend.domain.entities.Event;
