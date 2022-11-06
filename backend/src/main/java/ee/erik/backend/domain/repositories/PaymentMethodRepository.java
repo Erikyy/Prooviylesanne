@@ -1,6 +1,6 @@
 package ee.erik.backend.domain.repositories;
 
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
+import ee.erik.backend.domain.entities.PaymentMethod;
 
 import java.util.Optional;
 import java.util.Set;

@@ -1,8 +1,5 @@
 package ee.erik.backend.domain.entities;
 
-import ee.erik.backend.domain.entities.participant.Business;
-import ee.erik.backend.domain.entities.participant.Citizen;
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

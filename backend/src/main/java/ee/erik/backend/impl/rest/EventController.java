@@ -8,9 +8,7 @@ import ee.erik.backend.application.dto.read.PaymentMethodDto;
 import ee.erik.backend.application.dto.update.UpdateParticipantDto;
 import ee.erik.backend.application.managers.EventManager;
 import ee.erik.backend.application.dto.create.CreateEventDto;
-import ee.erik.backend.domain.entities.Error;
-import ee.erik.backend.domain.entities.Event;
-import ee.erik.backend.domain.entities.Participant;
+import ee.erik.backend.domain.services.EventSelector;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
+/**
+ * This controller manages both events and participants.
+ */
 @RestController()
 @RequestMapping("/api/v1/events")
 @Tag(name = "Events/Üritused", description = "Events API / Ürituste API ")
@@ -38,8 +39,8 @@ public class EventController {
     @Operation(summary = "List all events by before today or after today / Kuvab üritused kas enne või peale tänast kuupäeva", description = "List all events by before today or after today / Kuvab üritused kas enne või peale tänast kuupäeva", tags = {"Events"})
     @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = EventDto.class))))
     @GetMapping(produces = { "application/json" })
-    public Set<EventDto> events(@RequestParam(value = "event", required = false) String date) {
-        return this.manager.findEvents(date);
+    public Set<EventDto> events(@RequestParam(value = "event", required = false) EventSelector eventSelector) {
+        return this.manager.findEvents(eventSelector);
     }
 
     @Operation(summary = "Get event by id / Tagastab ürituse id kaudu", description = "Returns a event by id. / Tagastab ürituse id kaudu.")

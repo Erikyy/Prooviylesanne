@@ -2,7 +2,6 @@ package ee.erik.backend.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ee.erik.backend.application.dto.create.CreateEventDto;
-import ee.erik.backend.application.dto.create.CreateParticipantDto;
 import ee.erik.backend.application.dto.read.EventDto;
 import ee.erik.backend.application.dto.read.ParticipantDto;
 import ee.erik.backend.application.dto.read.PaymentMethodDto;
@@ -13,7 +12,6 @@ import ee.erik.backend.application.managers.EventManager;
 import ee.erik.backend.application.managers.PaymentMethodManager;
 import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
 import ee.erik.backend.domain.repositories.EventRepository;
 import ee.erik.backend.domain.repositories.ParticipantRepository;
 import ee.erik.backend.domain.services.EventService;
@@ -47,7 +45,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,15 +57,11 @@ public class EverythingIntegrationTest {
     @Container
     static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:14");
 
-
     @DynamicPropertySource
     static void registerDb(DynamicPropertyRegistry registry) {
-        //here is a problem with setting these properties
-        System.out.println(container.getJdbcUrl());
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.username", container::getUsername);
         registry.add("spring.datasource.password", container::getPassword);
-        //registry.add("spring.datasource.driver-class-name", () -> "org.testcontainers.jdbc.ContainerDatabaseDriver");
     }
     @Autowired
     private MockMvc mockMvc;

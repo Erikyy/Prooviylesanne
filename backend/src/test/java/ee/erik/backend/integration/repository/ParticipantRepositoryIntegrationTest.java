@@ -2,10 +2,8 @@ package ee.erik.backend.integration.repository;
 
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.repositories.ParticipantRepository;
-import ee.erik.backend.infrastructure.persistance.entities.EventEntity;
 import ee.erik.backend.infrastructure.persistance.entities.ParticipantEntity;
 import ee.erik.backend.infrastructure.persistance.entities.participant.PaymentMethodEntity;
-import ee.erik.backend.infrastructure.persistance.repositories.DbEventRepository;
 import ee.erik.backend.infrastructure.persistance.repositories.DbParticipantRepository;
 import ee.erik.backend.infrastructure.persistance.repositories.DbPaymentMethodRepository;
 import org.junit.jupiter.api.Test;
@@ -34,8 +32,6 @@ public class ParticipantRepositoryIntegrationTest {
 
     @DynamicPropertySource
     static void registerDb(DynamicPropertyRegistry registry) {
-        //here is a problem with setting these properties
-        System.out.println(container.getJdbcUrl());
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.username", container::getUsername);
         registry.add("spring.datasource.password", container::getPassword);

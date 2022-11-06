@@ -1,11 +1,13 @@
 package ee.erik.backend.unit.domain;
 
 
+import ee.erik.backend.domain.entities.Citizen;
 import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.repositories.EventRepository;
 import ee.erik.backend.domain.repositories.ParticipantRepository;
 import ee.erik.backend.domain.services.EventService;
+import ee.erik.backend.domain.services.EventServiceImpl;
 import ee.erik.backend.domain.services.exceptions.DomainEventDateException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,6 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
@@ -36,7 +37,7 @@ public class EventServiceTest {
     private ParticipantRepository participantRepository;
 
     @InjectMocks
-    private EventService eventService;
+    private EventService eventService = new EventServiceImpl();
 
     @Captor
     private ArgumentCaptor<Event> eventArgumentCaptor;
@@ -69,6 +70,7 @@ public class EventServiceTest {
     public void serviceShouldAddParticipantToEvent() {
         Participant participant = new Participant();
         participant.setId(1L);
+        participant.setCitizen(new Citizen());
         Event expectedEvent = new Event();
         expectedEvent.setId(1L);
         expectedEvent.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));

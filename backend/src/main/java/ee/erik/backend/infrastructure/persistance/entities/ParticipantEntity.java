@@ -1,7 +1,7 @@
 package ee.erik.backend.infrastructure.persistance.entities;
 
 import ee.erik.backend.domain.entities.Participant;
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
+import ee.erik.backend.domain.entities.PaymentMethod;
 import ee.erik.backend.infrastructure.persistance.entities.participant.BusinessEntity;
 import ee.erik.backend.infrastructure.persistance.entities.participant.CitizenEntity;
 import ee.erik.backend.infrastructure.persistance.entities.participant.PaymentMethodEntity;

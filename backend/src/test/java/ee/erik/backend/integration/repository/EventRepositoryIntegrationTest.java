@@ -32,7 +32,6 @@ public class EventRepositoryIntegrationTest {
 
     @DynamicPropertySource
     static void registerDb(DynamicPropertyRegistry registry) {
-        System.out.println(container.getJdbcUrl());
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.username", container::getUsername);
         registry.add("spring.datasource.password", container::getPassword);

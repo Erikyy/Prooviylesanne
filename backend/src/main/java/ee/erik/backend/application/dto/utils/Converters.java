@@ -8,9 +8,9 @@ import ee.erik.backend.application.dto.update.UpdateParticipantDto;
 import ee.erik.backend.application.dto.update.UpdatePaymentMethodDto;
 import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
-import ee.erik.backend.domain.entities.participant.Business;
-import ee.erik.backend.domain.entities.participant.Citizen;
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
+import ee.erik.backend.domain.entities.Business;
+import ee.erik.backend.domain.entities.Citizen;
+import ee.erik.backend.domain.entities.PaymentMethod;
 
 import java.util.HashSet;
 import java.util.stream.Collectors;

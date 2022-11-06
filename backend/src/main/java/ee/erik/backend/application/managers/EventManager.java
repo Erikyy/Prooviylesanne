@@ -2,70 +2,32 @@ package ee.erik.backend.application.managers;
 
 import ee.erik.backend.application.dto.create.CreateEventDto;
 import ee.erik.backend.application.dto.create.CreateParticipantDto;
-import ee.erik.backend.application.dto.read.*;
+import ee.erik.backend.application.dto.read.EventDto;
+import ee.erik.backend.application.dto.read.ParticipantDto;
 import ee.erik.backend.application.dto.update.UpdateParticipantDto;
-import ee.erik.backend.application.dto.utils.Converters;
-import ee.erik.backend.domain.entities.Event;
-import ee.erik.backend.domain.entities.Participant;
-import ee.erik.backend.domain.entities.participant.Business;
-import ee.erik.backend.domain.entities.participant.Citizen;
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
-import ee.erik.backend.domain.services.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import ee.erik.backend.domain.services.EventSelector;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * This class is used for interfacing outside the application layer, currently only used in impl/presentation folder.
+ *
  */
-@Component
-public class EventManager {
+public interface EventManager {
+    EventDto createNewEvent(CreateEventDto createEventDto);
 
-    private final EventService eventService;
+    void deleteEvent(Long eventId);
 
-    @Autowired
-    public EventManager(EventService eventService) {
-        this.eventService = eventService;
-    }
+    Set<EventDto> findEvents(EventSelector eventSelector);
 
-    public EventDto createNewEvent(CreateEventDto createEventDto) {
-        return Converters.convertToEventDto(this.eventService.createNewEvent(Converters.convertEventCreateDtoToEvent(createEventDto)));
-    }
+    ParticipantDto addParticipantToEvent(Long eventId, CreateParticipantDto createParticipantDto);
 
-    public void deleteEvent(Long eventId) {
-        this.eventService.deleteEvent(eventId);
-    }
+    ParticipantDto updateParticipantInEvent(Long eventId, Long participantId, UpdateParticipantDto updateParticipantDto);
 
-    public Set<EventDto> findEvents(String beforeAfterDateString) {
-        return this.eventService.findEvents(beforeAfterDateString).stream().map(Converters::convertToEventDto).collect(Collectors.toSet());
-    }
+    void deleteParticipantFromEvent(Long eventId, Long participantId);
 
-    public ParticipantDto addParticipantToEvent(Long eventId, CreateParticipantDto createParticipantDto) {
-        return Converters.convertToParticipantDto(this.eventService.addParticipantToEvent(eventId, Converters.convertCreateDtoToParticipant(createParticipantDto)));
-    }
+    Set<ParticipantDto> findAllParticipantsInEvent(Long eventId);
 
-    public ParticipantDto updateParticipantInEvent(Long eventId, Long participantId, UpdateParticipantDto updateParticipantDto) {
-        Participant participant = Converters.convertUpdateParticipantDtoToParticipant(updateParticipantDto);
-        participant.setId(participantId);
-        return Converters.convertToParticipantDto(this.eventService.updateParticipantInEvent(eventId, participant));
-    }
+    EventDto getEventById(Long id);
 
-    public void deleteParticipantFromEvent(Long eventId, Long participantId) {
-        this.eventService.deleteParticipantFromEvent(eventId, participantId);
-    }
-
-    public Set<ParticipantDto> findAllParticipantsInEvent(Long eventId) {
-        return this.eventService.findAllParticipantsInEvent(eventId).stream().map(Converters::convertToParticipantDto).collect(Collectors.toSet());
-    }
-
-    public EventDto getEventById(Long id) {
-        return Converters.convertToEventDto(this.eventService.getEventById(id));
-    }
-
-    public ParticipantDto findParticipantInEventById(Long eventId, Long participantId) {
-        return Converters.convertToParticipantDto(this.eventService.findParticipantInEventById(eventId, participantId));
-    }
+    ParticipantDto findParticipantInEventById(Long eventId, Long participantId);
 }

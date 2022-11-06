@@ -1,6 +1,6 @@
 package ee.erik.backend.infrastructure.persistance.entities.participant;
 
-import ee.erik.backend.domain.entities.participant.Business;
+import ee.erik.backend.domain.entities.Business;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

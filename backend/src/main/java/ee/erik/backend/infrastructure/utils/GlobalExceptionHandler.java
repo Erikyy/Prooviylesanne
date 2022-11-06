@@ -5,6 +5,7 @@ import ee.erik.backend.domain.entities.Error;
 import ee.erik.backend.domain.services.exceptions.DomainEventDateException;
 
 import ee.erik.backend.domain.services.exceptions.DomainNotFoundException;
+import ee.erik.backend.domain.services.exceptions.DomainUnableToAddException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,7 +22,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             DomainEventDateException.class
     })
     public ResponseEntity<Error> handleEventDateExceptions(Exception ex, WebRequest request) throws IOException {
-        return new ResponseEntity<>(new Error(HttpStatus.FORBIDDEN.value(), ex.getMessage()), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({
@@ -29,5 +30,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     })
     public ResponseEntity<Error> handleNotFoundExceptions(Exception ex, WebRequest request) throws IOException {
         return new ResponseEntity<>(new Error(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({
+            DomainUnableToAddException.class
+    })
+    public ResponseEntity<Error> handleUnableToAddExceptions(Exception ex, WebRequest request) throws IOException {
+        return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

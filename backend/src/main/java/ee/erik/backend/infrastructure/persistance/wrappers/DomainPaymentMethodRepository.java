@@ -1,6 +1,6 @@
 package ee.erik.backend.infrastructure.persistance.wrappers;
 
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
+import ee.erik.backend.domain.entities.PaymentMethod;
 import ee.erik.backend.domain.repositories.PaymentMethodRepository;
 import ee.erik.backend.infrastructure.persistance.entities.participant.PaymentMethodEntity;
 import ee.erik.backend.infrastructure.persistance.repositories.DbPaymentMethodRepository;

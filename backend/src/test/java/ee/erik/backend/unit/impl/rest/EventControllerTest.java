@@ -1,7 +1,6 @@
 package ee.erik.backend.unit.impl.rest;
 
 
-import ee.erik.backend.application.dto.create.CreateBusinessDto;
 import ee.erik.backend.application.dto.create.CreateCitizenDto;
 import ee.erik.backend.application.dto.create.CreateEventDto;
 import ee.erik.backend.application.dto.create.CreateParticipantDto;
@@ -13,10 +12,7 @@ import ee.erik.backend.application.dto.update.UpdateBusinessDto;
 import ee.erik.backend.application.dto.update.UpdateCitizenDto;
 import ee.erik.backend.application.dto.update.UpdateParticipantDto;
 import ee.erik.backend.application.managers.EventManager;
-import ee.erik.backend.domain.entities.Event;
-import ee.erik.backend.domain.entities.Participant;
-import ee.erik.backend.domain.entities.participant.Citizen;
-import ee.erik.backend.domain.entities.participant.PaymentMethod;
+import ee.erik.backend.domain.services.EventSelector;
 import ee.erik.backend.impl.rest.EventController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,9 +77,9 @@ public class EventControllerTest {
 
     @Test
     public void controllerShouldReturnEvents() throws Exception {
-        given(eventManager.findEvents("before")).willReturn(Set.of(testEvent));
+        given(this.eventManager.findEvents(EventSelector.Before)).willReturn(Set.of(testEvent));
 
-        MvcResult result = mockMvc.perform(get("/api/v1/events?event=before")
+        MvcResult result = mockMvc.perform(get("/api/v1/events?event=Before")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())

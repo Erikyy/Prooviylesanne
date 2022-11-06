@@ -5,7 +5,6 @@ import ee.erik.backend.application.dto.read.ErrorDto;
 import ee.erik.backend.application.dto.read.PaymentMethodDto;
 import ee.erik.backend.application.dto.update.UpdatePaymentMethodDto;
 import ee.erik.backend.application.managers.PaymentMethodManager;
-import ee.erik.backend.domain.entities.Error;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -22,8 +22,9 @@ import java.util.Set;
 @Tag(name = "Payment methods / Maksmise viisid", description = "Payment methods API / Maksmiste viiside API")
 public class PaymentMethodController {
 
-    private PaymentMethodManager paymentMethodManager;
+    private final PaymentMethodManager paymentMethodManager;
 
+    @Autowired
     public PaymentMethodController(PaymentMethodManager paymentMethodManager) {
         this.paymentMethodManager = paymentMethodManager;
     }
@@ -71,7 +72,7 @@ public class PaymentMethodController {
             @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
     })
     @DeleteMapping(path = "/{id}", produces = { "application/json" })
-    public void deletePaymentMethod(Long id) {
+    public void deletePaymentMethod(@PathVariable  Long id) {
         this.paymentMethodManager.deletePaymentMethod(id);
     }
 }
