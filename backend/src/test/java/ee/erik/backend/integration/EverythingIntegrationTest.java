@@ -128,11 +128,11 @@ public class EverythingIntegrationTest {
                 citizenEntity
         );
 
+        ParticipantEntity newParticipant = this.dbParticipantRepository.save(participantEntity);
+        EventEntity newEvent = this.dbEventRepository.save(savedEventEntity);
 
-        savedEventEntity.setParticipantEntities(Set.of(participantEntity));
-        EventEntity newSavedEventEntity = this.dbEventRepository.save(savedEventEntity);
-
-        assertThat(newSavedEventEntity.getParticipantEntities().stream().findFirst()).isPresent();
+        this.eventRepository.saveWithParticipant(newEvent.toEvent(), newParticipant.getId());
+        //assertThat(newSavedEventEntity.getParticipantEntities().stream().findFirst()).isPresent();
 
         //------------------------------------------------------------------
 
@@ -147,14 +147,13 @@ public class EverythingIntegrationTest {
         //------------------------------------------------------------------
 
         assertThat(this.eventRepository.findAll()).isNotEmpty();
-        Optional<Event> event = this.eventRepository.findAll().stream().findFirst();
-        assertThat(event).isPresent();
 
-        assertThat(event.get().getParticipants().stream().findFirst()).isPresent();
-        Optional<Participant> participant = this.participantRepository.findById(event.get().getParticipants().stream().findFirst().get().getId());
+
+
+        Optional<Participant> participant = this.participantRepository.findById(newParticipant.getId());
         assertThat(participant).isPresent();
 
-        MvcResult participant_result = mockMvc.perform(get("/api/v1/events/{eventId}/participants/{participantId}", event.get().getId(), participant.get().getId())
+        MvcResult participant_result = mockMvc.perform(get("/api/v1/events/{eventId}/participants/{participantId}", newEvent.getId(), participant.get().getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -168,9 +167,10 @@ public class EverythingIntegrationTest {
         assertThat(participantDto).isEqualTo(Converters.convertToParticipantDto(participant.get()));
 
         UpdateParticipantDto updateParticipant = new UpdateParticipantDto(
-                participant.get().getPaymentMethod().getId(),
+                new PaymentMethodDto(participant.get().getPaymentMethod().getId(), null),
                 participant.get().getName(),
                 new UpdateCitizenDto(
+                        1L,
                         participant.get().getCitizen().getLastName(),
                         participant.get().getCitizen().getIdNumber(),
                         participant.get().getCitizen().getInfo()
@@ -180,7 +180,7 @@ public class EverythingIntegrationTest {
 
         updateParticipant.setName("New name");
 
-        MvcResult participant_update_result = mockMvc.perform(put("/api/v1/events/{eventId}/participants/{participantId}", event.get().getId(), participantDto.getId())
+        MvcResult participant_update_result = mockMvc.perform(put("/api/v1/participants/{participantId}", newEvent.getId(), participantDto.getId())
                         .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(updateParticipant)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -237,7 +237,7 @@ public class EverythingIntegrationTest {
     }
 
     @Test
-    public void shouldDeleteParticipantAndReturnEmpty() throws Exception {
+    public void shouldDeleteParticipantReference() throws Exception {
 
         Optional<Event> event = this.eventRepository.findAll().stream().findFirst();
         assertThat(event).isPresent();
@@ -249,8 +249,5 @@ public class EverythingIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
-
-
-        assertThat(this.dbParticipantRepository.findAll()).isEmpty();
     }
 }

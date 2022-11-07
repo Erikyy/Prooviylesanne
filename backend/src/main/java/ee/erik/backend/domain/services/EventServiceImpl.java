@@ -79,13 +79,10 @@ public class EventServiceImpl implements EventService {
         Optional<Event> event = this.eventRepository.findById(eventId);
         if(event.isPresent()) {
             if (event.get().getDate().after(new Date())) {
-
                 if (participant.getBusiness() == null && participant.getCitizen() == null) {
-
                     throw new DomainUnableToAddException("Cannot add participant that have both citizen and business undefined");
                 }
                 if (participant.getId() == null) {
-                    System.out.println(participant);
                     Participant savedParticipant = this.participantRepository.save(participant);
                     if (this.eventRepository.saveWithParticipant(event.get(), savedParticipant.getId()).isEmpty()) {
                         throw new DomainUnableToAddException("Error adding participant to event");

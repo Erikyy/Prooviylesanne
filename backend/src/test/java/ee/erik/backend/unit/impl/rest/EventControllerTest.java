@@ -205,29 +205,7 @@ public class EventControllerTest {
         assertEquals(this.participant, res);
     }
 
-    @Test
-    public void controllerShouldUpdateParticipantInEvent() throws Exception {
 
-        UpdateParticipantDto createParticipantDto = new UpdateParticipantDto(
-                new PaymentMethodDto(this.participant.getPaymentMethod().getId(), null),
-                this.participant.getName(),
-                this.participant.getCitizen() == null ? null : new UpdateCitizenDto(),
-                this.participant.getBusiness() == null ? null : new UpdateBusinessDto()
-        );
-        given(this.eventManager.updateParticipant(1L, createParticipantDto)).willReturn(this.participant);
-
-        MvcResult result = mockMvc.perform(put("/api/v1/events/1/participants/1")
-                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(createParticipantDto)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andReturn();
-
-        String json = result.getResponse().getContentAsString();
-
-        ParticipantDto res = new ObjectMapper().readValue(json, ParticipantDto.class);
-
-        assertEquals(this.participant, res);
-    }
 
     @Test
     public void controllerShouldDeleteParticipantInEvent() throws Exception {

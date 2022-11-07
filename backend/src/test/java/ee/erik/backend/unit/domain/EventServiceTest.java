@@ -67,10 +67,11 @@ public class EventServiceTest {
     }
 
     @Test
-    public void serviceShouldAddParticipantToEvent() {
+    public void serviceShouldAddExistingParticipantToEvent() {
         Participant participant = new Participant();
         participant.setId(1L);
         participant.setCitizen(new Citizen());
+
         Event expectedEvent = new Event();
         expectedEvent.setId(1L);
         expectedEvent.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
@@ -78,38 +79,54 @@ public class EventServiceTest {
 
         given(this.eventRepository.findById(1L)).willReturn(Optional.of(expectedEvent));
 
-        Set<Participant> participants = Mockito.spy(new HashSet<>());
-        participants.add(participant);
-
-        //expectedEvent.setParticipants(Mockito.spy(participants));
-
-        given(this.eventRepository.save(expectedEvent)).willReturn(expectedEvent);
+        given(this.eventRepository.saveWithParticipant(expectedEvent, 1L)).willReturn(Optional.of(expectedEvent));
 
         assertDoesNotThrow(() -> {
             eventService.addParticipantToEvent(1L, participant);
         });
 
-        verify(this.eventRepository).save(this.eventArgumentCaptor.capture());
+        verify(this.eventRepository).saveWithParticipant(expectedEvent, 1L);
 
-        then(expectedEvent).isEqualTo(this.eventArgumentCaptor.getValue());
+
     }
 
     @Test
-    public void serviceShouldUpdateParticipantInEvent() {
+    public void serviceShouldAddNewParticipantToEvent() {
         Participant participant = new Participant();
-        participant.setId(1L);
+        participant.setCitizen(new Citizen());
+
+        Participant savedParticipant = new Participant();
+        savedParticipant.setId(1L);
+        savedParticipant.setCitizen(new Citizen());
 
         Event expectedEvent = new Event();
         expectedEvent.setId(1L);
         expectedEvent.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
 
+
         given(this.eventRepository.findById(1L)).willReturn(Optional.of(expectedEvent));
+
+        given(this.participantRepository.save(participant)).willReturn(savedParticipant);
+        given(this.eventRepository.saveWithParticipant(expectedEvent, 1L)).willReturn(Optional.of(expectedEvent));
+
+        assertDoesNotThrow(() -> {
+            eventService.addParticipantToEvent(1L, participant);
+        });
+
+        verify(this.eventRepository).saveWithParticipant(expectedEvent, 1L);
+    }
+
+    @Test
+    public void serviceShouldUpdateParticipant() {
+        Participant participant = new Participant();
+        participant.setId(1L);
+
         given(this.participantRepository.findById(1L)).willReturn(Optional.of(participant));
 
         given(this.participantRepository.save(participant)).willReturn(participant);
 
         assertDoesNotThrow(() -> {
-            this.eventService.updateParticipantInEvent(1L, participant);
+            this.eventService.updateParticipant(participant);
         });
 
         verify(this.participantRepository).save(this.participantArgumentCaptor.capture());
@@ -127,15 +144,13 @@ public class EventServiceTest {
         expectedEvent.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
 
         given(this.eventRepository.findById(1L)).willReturn(Optional.of(expectedEvent));
-        given(this.participantRepository.findById(1L)).willReturn(Optional.of(participant));
+        given(this.participantRepository.findByIdInEventById(1L, 1L)).willReturn(Optional.of(participant));
 
         assertDoesNotThrow(() -> {
             this.eventService.deleteParticipantFromEvent(1L, 1L);
         });
 
-        verify(this.participantRepository, times(1)).delete(this.participantArgumentCaptor.capture());
-
-        then(participant).isEqualTo(this.participantArgumentCaptor.getValue());
+        verify(this.participantRepository, times(1)).delete(1L, 1L);
     }
 
     @Test
@@ -187,14 +202,7 @@ public class EventServiceTest {
         Participant participant = new Participant();
         participant.setId(1L);
 
-        Event expectedEvent = new Event();
-        expectedEvent.setId(1L);
-        expectedEvent.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
-
-        //expectedEvent.setParticipants(Set.of(participant));
-
-        given(this.eventRepository.findById(1L)).willReturn(Optional.of(expectedEvent));
-        given(this.participantRepository.findById(1L)).willReturn(Optional.of(participant));
+        given(this.participantRepository.findByIdInEventById(1L, 1L)).willReturn(Optional.of(participant));
 
         assertDoesNotThrow(() -> {
             this.eventService.findParticipantInEventById(1L, 1L);
