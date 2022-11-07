@@ -88,6 +88,7 @@ export class ParticipantCitizenFormComponent implements OnInit {
         console.log('submit new');
 
         this.submit.emit({
+          id: null,
           name,
           paymentMethodId: paymentMethod,
           citizen: {

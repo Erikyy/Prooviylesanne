@@ -6,5 +6,4 @@ export interface IEvent {
   date: Date;
   location: string;
   info: string;
-  participants: IParticipant[];
 }

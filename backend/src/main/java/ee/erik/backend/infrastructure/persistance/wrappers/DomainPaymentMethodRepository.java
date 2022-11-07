@@ -2,7 +2,7 @@ package ee.erik.backend.infrastructure.persistance.wrappers;
 
 import ee.erik.backend.domain.entities.PaymentMethod;
 import ee.erik.backend.domain.repositories.PaymentMethodRepository;
-import ee.erik.backend.infrastructure.persistance.entities.participant.PaymentMethodEntity;
+import ee.erik.backend.infrastructure.persistance.entities.PaymentMethodEntity;
 import ee.erik.backend.infrastructure.persistance.repositories.DbPaymentMethodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

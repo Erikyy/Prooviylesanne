@@ -81,7 +81,7 @@ public class EventServiceTest {
         Set<Participant> participants = Mockito.spy(new HashSet<>());
         participants.add(participant);
 
-        expectedEvent.setParticipants(Mockito.spy(participants));
+        //expectedEvent.setParticipants(Mockito.spy(participants));
 
         given(this.eventRepository.save(expectedEvent)).willReturn(expectedEvent);
 
@@ -191,7 +191,7 @@ public class EventServiceTest {
         expectedEvent.setId(1L);
         expectedEvent.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
 
-        expectedEvent.setParticipants(Set.of(participant));
+        //expectedEvent.setParticipants(Set.of(participant));
 
         given(this.eventRepository.findById(1L)).willReturn(Optional.of(expectedEvent));
         given(this.participantRepository.findById(1L)).willReturn(Optional.of(participant));

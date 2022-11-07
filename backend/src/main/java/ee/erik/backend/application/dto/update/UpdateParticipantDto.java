@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateParticipantDto {
-    private Long paymentMethodId;
+    private PaymentMethodDto paymentMethod;
     private String name;
     private UpdateCitizenDto citizen;
     private UpdateBusinessDto business;

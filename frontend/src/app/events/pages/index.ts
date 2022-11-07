@@ -5,8 +5,8 @@ import { ParticipantComponent } from './participant/participant.component';
 
 //export all pages from here with Page suffix
 export {
-  AddEventComponent as AddEventPage,
-  EventsComponent as EventsPage,
-  EventComponent as EventDetailPage,
-  ParticipantComponent as ParticipantPage,
+  AddEventComponent,
+  EventsComponent,
+  EventComponent,
+  ParticipantComponent,
 };

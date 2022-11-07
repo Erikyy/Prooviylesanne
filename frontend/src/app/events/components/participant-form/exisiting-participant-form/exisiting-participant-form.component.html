@@ -1,0 +1,44 @@
+<form
+  class="flex flex-col gap-2 pt-6"
+  [formGroup]="participantForm"
+  (ngSubmit)="onSubmit()"
+>
+  <div class="grid grid-cols-3 gap-12">
+    <label
+      for="participant"
+      class="col-span-1 block mb-2 text-sm font-medium text-gray-900"
+      >Makseviis:</label
+    >
+    <select
+      formControlName="participant"
+      id="participant"
+      class="col-span-2 bg-gray-50 border border-neutral-500 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-1"
+      name="participant"
+      [formGroup]="participantForm"
+    >
+      <option
+        *ngFor="let participant of participants; let i = index"
+        [attr.data-index]="i"
+        [ngValue]="participant"
+      >
+        {{ i + 1 }}.
+        {{ participant.name }}
+        {{ participant.citizen !== null ? participant.citizen.lastName : null }}
+        {{ participant.citizen !== null ? participant.citizen.idNumber : null }}
+      </option>
+    </select>
+  </div>
+  <div class="flex gap-2 pt-8">
+    <app-button
+      (onClick)="onBackClicked()"
+      [buttonStyle]="btnStyle1"
+      title="Tagasi"
+    ></app-button>
+    <app-button
+      (onClick)="onSubmit()"
+      [buttonType]="''"
+      [buttonStyle]="btnStyle2"
+      [title]="'Lisa'"
+    ></app-button>
+  </div>
+</form>

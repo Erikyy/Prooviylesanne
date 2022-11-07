@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateParticipantDto {
+    private Long id;
     private Long paymentMethodId;
     private String name;
     private CreateCitizenDto citizen;

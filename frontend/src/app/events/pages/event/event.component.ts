@@ -27,8 +27,9 @@ export class EventComponent implements OnInit {
     info: '',
     location: '',
     id: -1,
-    participants: [],
   };
+
+  participants: IParticipant[] = [];
 
   constructor(private router: Router, private eventService: EventsService) {
     this.router.events.subscribe((data) => {
@@ -50,6 +51,12 @@ export class EventComponent implements OnInit {
       this.event = event;
       this.eventId = event.id;
     });
+
+    this.eventService
+      .getParticipantsFromEvent(+eventId)
+      .subscribe((participants) => {
+        this.participants = participants;
+      });
   }
 
   getPaymentMethods() {
@@ -96,6 +103,18 @@ export class EventComponent implements OnInit {
       });
   }
 
+  onEditSubmit(participant: IParticipant) {
+    this.eventService
+      .addParticipantToEvent(this.eventId, participant)
+      .subscribe({
+        complete: () => {
+          this.ngOnInit();
+        },
+        error: () => {
+          alert('Osaleja lisamine põrus');
+        },
+      });
+  }
   onBackClicked(): void {
     this.router.navigate(['/']);
   }

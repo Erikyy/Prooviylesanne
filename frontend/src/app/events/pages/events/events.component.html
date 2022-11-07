@@ -8,14 +8,14 @@
     <app-events-list
       [removable]="true"
       [title]="'Tulevased üritused'"
-      [fetchType]="'after'"
+      [fetchType]="'After'"
       (onRemoveClick)="removeEvent($event)"
     >
       <app-button (onClick)="onAddClick()" title="Lisa üritus"></app-button>
     </app-events-list>
     <app-events-list
       [title]="'Toimunud üritused'"
-      [fetchType]="'before'"
+      [fetchType]="'Before'"
     ></app-events-list>
   </div>
 </div>

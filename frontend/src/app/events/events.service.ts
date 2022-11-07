@@ -55,9 +55,13 @@ export class EventsService {
 
   addParticipantToEvent(
     eventId: number,
-    participant: IParticipantAdd
+    participant: IParticipantAdd | IParticipant
   ): Observable<IParticipant> {
     return this.backendService.addParticipantToEvent(eventId, participant);
+  }
+
+  getParticipantsFromEvent(eventId: number): Observable<IParticipant[]> {
+    return this.backendService.getParticipantsFromEvent(eventId);
   }
 
   getParticipantFromEvent(
@@ -92,5 +96,9 @@ export class EventsService {
 
   getPaymentMethods(): Observable<IPaymentMethod[]> {
     return this.backendService.getPaymentMethods();
+  }
+
+  getParticipants(): Observable<IParticipant[]> {
+    return this.backendService.getParticipants();
   }
 }

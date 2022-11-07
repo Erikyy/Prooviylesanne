@@ -2,9 +2,6 @@ package ee.erik.backend.infrastructure.persistance.entities;
 
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.entities.PaymentMethod;
-import ee.erik.backend.infrastructure.persistance.entities.participant.BusinessEntity;
-import ee.erik.backend.infrastructure.persistance.entities.participant.CitizenEntity;
-import ee.erik.backend.infrastructure.persistance.entities.participant.PaymentMethodEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,6 +37,12 @@ public class ParticipantEntity {
 
     public static ParticipantEntity toEntity(Participant participant) {
 
-        return new ParticipantEntity(participant.getId(), AggregateReference.to(participant.getPaymentMethod().getId()), participant.getName(),  CitizenEntity.toEntiy(participant.getCitizen()), BusinessEntity.toEntity(participant.getBusiness()));
+        return new ParticipantEntity(
+                participant.getId(),
+                AggregateReference.to(participant.getPaymentMethod().getId()),
+                participant.getName(),
+                CitizenEntity.toEntity(participant.getCitizen()),
+                BusinessEntity.toEntity(participant.getBusiness())
+        );
     }
 }

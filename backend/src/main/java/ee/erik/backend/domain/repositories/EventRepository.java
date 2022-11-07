@@ -32,4 +32,13 @@ public interface EventRepository {
     void delete(Event event);
 
     Event save(Event event);
+
+    /**
+     * Saves with participant reference id
+     * This function will return empty if event id doesn't exist
+     * @param event existing event
+     * @param participantRefId participant reference
+     * @return domain event as optional
+     */
+    Optional<Event> saveWithParticipant(Event event, Long participantRefId);
 }

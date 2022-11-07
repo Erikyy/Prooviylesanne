@@ -10,18 +10,25 @@ import { EventFormComponent } from './components/event-form/event-form.component
 import { ParticipantFormComponent } from './components/participant-form/participant-form.component';
 import { ParticipantCitizenFormComponent } from './components/participant-form/participant-citizen-form/participant-citizen-form.component';
 import { ParticipantBusinessFormComponent } from './components/participant-form/participant-business-form/participant-business-form.component';
-import { AddEventPage, EventsPage, ParticipantPage } from './pages';
+import {
+  AddEventComponent,
+  EventComponent,
+  EventsComponent,
+  ParticipantComponent,
+} from './pages';
+import { ExisitingParticipantFormComponent } from './components/participant-form/exisiting-participant-form/exisiting-participant-form.component';
 @NgModule({
   declarations: [
-    EventsPage,
-    AddEventPage,
+    EventComponent,
+    AddEventComponent,
     EventsListComponent,
-    ParticipantPage,
+    ParticipantComponent,
     EventFormComponent,
-    EventsPage,
+    EventsComponent,
     ParticipantFormComponent,
     ParticipantCitizenFormComponent,
     ParticipantBusinessFormComponent,
+    ExisitingParticipantFormComponent,
   ],
   imports: [
     CommonModule,

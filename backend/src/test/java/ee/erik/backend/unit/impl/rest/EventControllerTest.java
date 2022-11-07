@@ -70,8 +70,7 @@ public class EventControllerTest {
                 "test",
                 Date.from(LocalDate.now().plusDays(5).atStartOfDay().toInstant(ZoneOffset.UTC)),
                 "test",
-                "info",
-                Set.of(participant)
+                "info"
                 );
     }
 
@@ -148,7 +147,7 @@ public class EventControllerTest {
 
     @Test
     public void controllerShouldFindAllParticipantsInEvent() throws Exception {
-        given(this.eventManager.findAllParticipantsInEvent(1L)).willReturn(this.testEvent.getParticipants());
+        given(this.eventManager.findAllParticipantsInEvent(1L)).willReturn(Set.of(this.participant));
 
         MvcResult result = mockMvc.perform(get("/api/v1/events/1/participants")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -159,8 +158,8 @@ public class EventControllerTest {
         String json = result.getResponse().getContentAsString();
 
         ParticipantDto[] res = new ObjectMapper().readValue(json, ParticipantDto[].class);
-
-        assertEquals(this.testEvent.getParticipants(), Set.of(res));
+        assertEquals(
+                Set.of(this.participant), Set.of(res));
     }
 
     @Test
@@ -210,12 +209,12 @@ public class EventControllerTest {
     public void controllerShouldUpdateParticipantInEvent() throws Exception {
 
         UpdateParticipantDto createParticipantDto = new UpdateParticipantDto(
-                this.participant.getPaymentMethod().getId(),
+                new PaymentMethodDto(this.participant.getPaymentMethod().getId(), null),
                 this.participant.getName(),
                 this.participant.getCitizen() == null ? null : new UpdateCitizenDto(),
                 this.participant.getBusiness() == null ? null : new UpdateBusinessDto()
         );
-        given(this.eventManager.updateParticipantInEvent(1L, 1L, createParticipantDto)).willReturn(this.participant);
+        given(this.eventManager.updateParticipant(1L, createParticipantDto)).willReturn(this.participant);
 
         MvcResult result = mockMvc.perform(put("/api/v1/events/1/participants/1")
                         .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(createParticipantDto)))

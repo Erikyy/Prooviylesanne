@@ -21,11 +21,13 @@ public interface EventManager {
 
     ParticipantDto addParticipantToEvent(Long eventId, CreateParticipantDto createParticipantDto);
 
-    ParticipantDto updateParticipantInEvent(Long eventId, Long participantId, UpdateParticipantDto updateParticipantDto);
+    ParticipantDto updateParticipant(Long participantId, UpdateParticipantDto updateParticipantDto);
 
     void deleteParticipantFromEvent(Long eventId, Long participantId);
 
     Set<ParticipantDto> findAllParticipantsInEvent(Long eventId);
+
+    Set<ParticipantDto> findAllParticipants();
 
     EventDto getEventById(Long id);
 

@@ -1,6 +1,6 @@
 package ee.erik.backend.infrastructure.persistance.repositories;
 
-import ee.erik.backend.infrastructure.persistance.entities.participant.PaymentMethodEntity;
+import ee.erik.backend.infrastructure.persistance.entities.PaymentMethodEntity;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 

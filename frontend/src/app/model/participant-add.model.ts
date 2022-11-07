@@ -2,6 +2,7 @@ import { FormControl } from '@angular/forms';
 import { IPaymentMethod } from './payment-method.model';
 
 export interface IParticipantAdd {
+  id: number | null;
   name: string;
   paymentMethodId: number;
   citizen: IParticipantCitizenAdd | null;

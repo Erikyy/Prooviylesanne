@@ -26,6 +26,16 @@
       />
       <label for="business">Ettevõte</label>
     </div>
+    <div class="flex gap-1">
+      <input
+        id="exisiting"
+        type="radio"
+        value="existing"
+        name="participantType"
+        formControlName="participantType"
+      />
+      <label for="existing">Lisa olemasolev osavõtja</label>
+    </div>
   </fieldset>
   <app-participant-citizen-form
     [paymentMethods]="paymentMethods"
@@ -44,4 +54,9 @@
     [title]="title"
   >
   </app-participant-business-form>
+  <app-exisiting-participant-form
+    (onSubmit)="onEditSubmit($event)"
+    *ngIf="participantTypeForm.value.participantType === 'existing'"
+  >
+  </app-exisiting-participant-form>
 </div>

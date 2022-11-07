@@ -44,10 +44,11 @@ public class EventManagerImpl implements EventManager {
         return Converters.convertToParticipantDto(this.eventService.addParticipantToEvent(eventId, Converters.convertCreateDtoToParticipant(createParticipantDto)));
     }
 
-    public ParticipantDto updateParticipantInEvent(Long eventId, Long participantId, UpdateParticipantDto updateParticipantDto) {
+    public ParticipantDto updateParticipant(Long participantId, UpdateParticipantDto updateParticipantDto) {
+        System.out.println(updateParticipantDto);
         Participant participant = Converters.convertUpdateParticipantDtoToParticipant(updateParticipantDto);
         participant.setId(participantId);
-        return Converters.convertToParticipantDto(this.eventService.updateParticipantInEvent(eventId, participant));
+        return Converters.convertToParticipantDto(this.eventService.updateParticipant(participant));
     }
 
     public void deleteParticipantFromEvent(Long eventId, Long participantId) {
@@ -64,5 +65,10 @@ public class EventManagerImpl implements EventManager {
 
     public ParticipantDto findParticipantInEventById(Long eventId, Long participantId) {
         return Converters.convertToParticipantDto(this.eventService.findParticipantInEventById(eventId, participantId));
+    }
+
+    @Override
+    public Set<ParticipantDto> findAllParticipants() {
+        return this.eventService.findAllParticipants().stream().map(Converters::convertToParticipantDto).collect(Collectors.toSet());
     }
 }

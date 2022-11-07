@@ -1,4 +1,4 @@
-package ee.erik.backend.infrastructure.persistance.entities.participant;
+package ee.erik.backend.infrastructure.persistance.entities;
 
 import ee.erik.backend.domain.entities.Citizen;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class CitizenEntity {
         return new Citizen(this.id, this.lastName, this.idNumber, this.info);
     }
 
-    public static CitizenEntity toEntiy(Citizen citizen) {
+    public static CitizenEntity toEntity(Citizen citizen) {
         if (citizen == null) {
             return null;
         }

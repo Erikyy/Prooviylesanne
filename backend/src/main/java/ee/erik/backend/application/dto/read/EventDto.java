@@ -16,5 +16,4 @@ public class EventDto {
     private Date date;
     private String location;
     private String info;
-    private Set<ParticipantDto> participants;
 }

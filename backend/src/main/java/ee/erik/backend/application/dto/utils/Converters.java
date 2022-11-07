@@ -25,6 +25,9 @@ public class Converters {
         PaymentMethod paymentMethod = new PaymentMethod();
         paymentMethod.setId(createParticipantDto.getPaymentMethodId());
         Participant participant = new Participant();
+        if (createParticipantDto.getId() != null) {
+            participant.setId(createParticipantDto.getId());
+        }
         participant.setName(createParticipantDto.getName());
         participant.setPaymentMethod(paymentMethod);
         participant.setCitizen(Converters.convertCreateCitizenDtoToCitizen(createParticipantDto.getCitizen()));
@@ -59,6 +62,7 @@ public class Converters {
     public static Citizen convertUpdateCitizenDtoToCitizen(UpdateCitizenDto updateCitizenDto) {
         if (updateCitizenDto != null) {
             Citizen citizen = new Citizen();
+            citizen.setId(updateCitizenDto.getId());
             citizen.setInfo(updateCitizenDto.getInfo());
             citizen.setLastName(updateCitizenDto.getLastName());
             citizen.setIdNumber(updateCitizenDto.getIdNumber());
@@ -71,6 +75,7 @@ public class Converters {
     public static Business convertUpdateBusinessDtoToBusiness(UpdateBusinessDto updateBusinessDto) {
         if (updateBusinessDto != null) {
             Business business = new Business();
+            business.setId(updateBusinessDto.getId());
             business.setNumOfParticipants(updateBusinessDto.getNumOfParticipants());
             business.setRegCode(updateBusinessDto.getRegCode());
             business.setInfo(updateBusinessDto.getInfo());
@@ -86,8 +91,7 @@ public class Converters {
                 event.getName(),
                 event.getDate(),
                 event.getLocation(),
-                event.getInfo(),
-                event.getParticipants().stream().map(Converters::convertToParticipantDto).collect(Collectors.toSet())
+                event.getInfo()
         );
     }
 
@@ -95,7 +99,6 @@ public class Converters {
         Event event = new Event();
         event.setName(createEventDto.getName());
         event.setDate(createEventDto.getDate());
-        event.setParticipants(new HashSet<>());
         event.setLocation(createEventDto.getLocation());
         return event;
     }
@@ -121,7 +124,7 @@ public class Converters {
 
     public static Participant convertUpdateParticipantDtoToParticipant(UpdateParticipantDto updateParticipantDto) {
         PaymentMethod paymentMethod = new PaymentMethod();
-        paymentMethod.setId(updateParticipantDto.getPaymentMethodId());
+        paymentMethod.setId(updateParticipantDto.getPaymentMethod().getId());
         Participant participant = new Participant();
         participant.setName(updateParticipantDto.getName());
         participant.setPaymentMethod(paymentMethod);

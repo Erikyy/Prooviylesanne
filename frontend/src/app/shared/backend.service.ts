@@ -35,7 +35,6 @@ export class BackendService {
           id: -1,
           location: event.location,
           name: event.name,
-          participants: [],
           info: '',
         })
       )
@@ -55,7 +54,6 @@ export class BackendService {
           id: id,
           location: '',
           name: '',
-          participants: [],
           date: new Date(),
           info: '',
         })
@@ -65,7 +63,7 @@ export class BackendService {
 
   addParticipantToEvent(
     eventId: number,
-    participant: IParticipantAdd
+    participant: IParticipantAdd | IParticipant
   ): Observable<IParticipant> {
     return this.http
       .post<IParticipant>(
@@ -88,6 +86,24 @@ export class BackendService {
       .pipe(catchError(this.handleError('deleteParticipant')));
   }
 
+  getParticipants(): Observable<IParticipant[]> {
+    return this.http
+      .get<IParticipant[]>(`${environment.apiUrl}/participants/`)
+      .pipe(
+        catchError(this.handleError<IParticipant[]>('getParticipantsFromEvent'))
+      );
+  }
+
+  getParticipantsFromEvent(eventId: number): Observable<IParticipant[]> {
+    return this.http
+      .get<IParticipant[]>(
+        `${environment.apiUrl}/events/${eventId}/participants/`
+      )
+      .pipe(
+        catchError(this.handleError<IParticipant[]>('getParticipantsFromEvent'))
+      );
+  }
+
   getParticipantFromEvent(
     eventId: number,
     participantId: number
@@ -107,7 +123,7 @@ export class BackendService {
   ): Observable<IParticipant> {
     return this.http
       .put<IParticipant>(
-        `${environment.apiUrl}/events/${eventId}/participants/${participant.id}`,
+        `${environment.apiUrl}/participants/${participant.id}`,
         participant
       )
       .pipe(

@@ -89,6 +89,7 @@ export class ParticipantBusinessFormComponent implements OnInit {
         });
       } else {
         this.submit.emit({
+          id: null,
           name,
           paymentMethodId: paymentMethod,
           business: {

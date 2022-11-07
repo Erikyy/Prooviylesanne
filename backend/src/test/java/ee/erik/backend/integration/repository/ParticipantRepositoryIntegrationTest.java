@@ -3,7 +3,7 @@ package ee.erik.backend.integration.repository;
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.repositories.ParticipantRepository;
 import ee.erik.backend.infrastructure.persistance.entities.ParticipantEntity;
-import ee.erik.backend.infrastructure.persistance.entities.participant.PaymentMethodEntity;
+import ee.erik.backend.infrastructure.persistance.entities.PaymentMethodEntity;
 import ee.erik.backend.infrastructure.persistance.repositories.DbParticipantRepository;
 import ee.erik.backend.infrastructure.persistance.repositories.DbPaymentMethodRepository;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateCitizenDto {
+    private Long id;
     private String lastName;
     private Long idNumber;
     private String info;

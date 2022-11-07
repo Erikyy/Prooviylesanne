@@ -37,7 +37,7 @@
       <app-flex-grid-item
         ><table class="">
           <tr
-            *ngFor="let participant of event.participants; let i = index"
+            *ngFor="let participant of participants; let i = index"
             [attr.data-index]="i"
             class="w-full"
           >
@@ -68,6 +68,7 @@
       [paymentMethods]="paymentMethods"
       (onBackClicked)="onBackClicked()"
       (onSubmit)="onSubmit($event)"
+      (onEditSubmit)="onEditSubmit($event)"
       title="Lisa osavõtja"
     ></app-participant-form>
   </div>

@@ -18,5 +18,4 @@ public class Event {
     private Date date;
     private String location;
     private String info;
-    private Set<Participant> participants;
 }

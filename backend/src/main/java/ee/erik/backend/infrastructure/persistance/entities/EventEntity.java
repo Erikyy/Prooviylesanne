@@ -36,25 +36,21 @@ public class EventEntity {
     @Column("e_info")
     private String info;
 
-    @MappedCollection(keyColumn = "p_event_id", idColumn = "p_event_id")
-    private Set<ParticipantEntity> participantEntities = new HashSet<>();
+    @MappedCollection(keyColumn = "participant_id", idColumn = "event_id")
+    private Set<ParticipantRef> participantEntities = new HashSet<>();
 
+    public EventEntity(Long id, String name, Date date, String location, String info) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.location = location;
+        this.info = info;
+    }
     public Event toEvent() {
-        Set<Participant> participants = this.participantEntities.stream().map(participantEntity -> {
-            if(participantEntity != null) {
-                return participantEntity.toParticipant();
-            } else {
-                return null;
-            }
-                })
-                .collect(Collectors.toSet());
-
-        return new Event(this.id, this.name, this.date, this.location, this.info, participants);
+        return new Event(this.id, this.name, this.date, this.location, this.info);
     }
 
     public static EventEntity toEntity(Event event) {
-        Set<ParticipantEntity> participantEntitySet = event.getParticipants().stream().map(ParticipantEntity::toEntity)
-                .collect(Collectors.toSet());
-        return new EventEntity(event.getId(), event.getName(), event.getDate(), event.getLocation(), event.getInfo(), participantEntitySet);
+        return new EventEntity(event.getId(), event.getName(), event.getDate(), event.getLocation(), event.getInfo());
     }
 }

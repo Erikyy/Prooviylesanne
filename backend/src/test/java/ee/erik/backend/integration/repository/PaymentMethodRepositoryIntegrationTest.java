@@ -2,7 +2,7 @@ package ee.erik.backend.integration.repository;
 
 import ee.erik.backend.domain.entities.PaymentMethod;
 import ee.erik.backend.domain.repositories.PaymentMethodRepository;
-import ee.erik.backend.infrastructure.persistance.entities.participant.PaymentMethodEntity;
+import ee.erik.backend.infrastructure.persistance.entities.PaymentMethodEntity;
 import ee.erik.backend.infrastructure.persistance.repositories.DbPaymentMethodRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

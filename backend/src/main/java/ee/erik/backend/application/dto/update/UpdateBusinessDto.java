@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateBusinessDto {
+    private Long id;
     private Long regCode;
     private Long numOfParticipants;
     private String info;
