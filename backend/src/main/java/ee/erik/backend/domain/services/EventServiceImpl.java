@@ -33,6 +33,7 @@ public class EventServiceImpl implements EventService {
         this.participantRepository = participantRepository;
     }
 
+    @Override
     public Event createNewEvent(Event event) {
         if (event.getDate().after(new Date())) {
             return this.eventRepository.save(event);
@@ -42,6 +43,16 @@ public class EventServiceImpl implements EventService {
 
     }
 
+    @Override
+    public Event updateEvent(Event event) {
+        if (event.getDate().after(new Date())) {
+            return this.eventRepository.save(event);
+        } else {
+            throw new DomainEventDateException("Date: " + event.getDate().toString() + " is not accepted");
+        }
+    }
+
+    @Override
     public void deleteEvent(Long eventId) {
         Optional<Event> event = this.eventRepository.findById(eventId);
         if (event.isPresent()) {
@@ -57,6 +68,7 @@ public class EventServiceImpl implements EventService {
 
     }
 
+    @Override
     public Set<Event> findEvents(EventSelector eventSelector) {
         if (eventSelector == null) {
             return this.eventRepository.findAll();
@@ -73,8 +85,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-
-
+    @Override
     public Participant addParticipantToEvent(Long eventId, Participant participant) {
         Optional<Event> event = this.eventRepository.findById(eventId);
         if(event.isPresent()) {
@@ -101,6 +112,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+    @Override
     public Participant updateParticipant(Participant participant) {
         Optional<Participant> foundParticipant = this.participantRepository.findById(participant.getId());
         System.out.println(participant);
@@ -111,6 +123,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+    @Override
     public void deleteParticipantFromEvent(Long eventId, Long participantId) {
         //check that date is in future and that the participant exists
         Optional<Event> event = this.eventRepository.findById(eventId);
@@ -131,6 +144,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+    @Override
     public Set<Participant> findAllParticipantsInEvent(Long eventId) {
         Optional<Event> event = this.eventRepository.findById(eventId);
         if(event.isPresent()) {
@@ -140,6 +154,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+    @Override
     public Event getEventById(Long id) {
         Optional<Event> event = this.eventRepository.findById(id);
         if (event.isPresent()) {
@@ -149,6 +164,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+    @Override
     public Participant findParticipantInEventById(Long eventId, Long participantId) {
         Optional<Participant> participant = this.participantRepository.findByIdInEventById(participantId, eventId);
         if (participant.isPresent()) {

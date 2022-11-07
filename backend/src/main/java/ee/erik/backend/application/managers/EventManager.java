@@ -4,6 +4,7 @@ import ee.erik.backend.application.dto.create.CreateEventDto;
 import ee.erik.backend.application.dto.create.CreateParticipantDto;
 import ee.erik.backend.application.dto.read.EventDto;
 import ee.erik.backend.application.dto.read.ParticipantDto;
+import ee.erik.backend.application.dto.update.UpdateEventDto;
 import ee.erik.backend.application.dto.update.UpdateParticipantDto;
 import ee.erik.backend.domain.services.EventSelector;
 
@@ -14,6 +15,8 @@ import java.util.Set;
  */
 public interface EventManager {
     EventDto createNewEvent(CreateEventDto createEventDto);
+
+    EventDto updateEvent(UpdateEventDto updateEventDto);
 
     void deleteEvent(Long eventId);
 

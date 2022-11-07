@@ -12,6 +12,8 @@ import java.util.Set;
 public interface EventService {
     Event createNewEvent(Event event);
 
+    Event updateEvent(Event event);
+
     void deleteEvent(Long eventId);
     Set<Event> findEvents(EventSelector eventSelector);
 

@@ -20,6 +20,9 @@ The database diagram is shown in this image:
 
 ![Database structure](./db-schema.png)
 
+It's also possible to view this database diagram with Intellij Idea.
+https://www.jetbrains.com/help/idea/creating-diagrams.html
+
 ## Backend
 
 ### Folder structure and roles

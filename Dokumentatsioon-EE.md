@@ -20,6 +20,9 @@ Andmebaasi diagramm on näidatud selles pildis:
 
 ![Database structure](./db-schema.png)
 
+Intellij Idea keskonnas on ka võimalik näha andmebaasi diagrammi.
+https://www.jetbrains.com/help/idea/creating-diagrams.html
+
 ## Backend
 
 ### Kausta struktuur ja rollid

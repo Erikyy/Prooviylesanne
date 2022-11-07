@@ -5,6 +5,7 @@ import ee.erik.backend.application.dto.read.ErrorDto;
 import ee.erik.backend.application.dto.read.EventDto;
 import ee.erik.backend.application.dto.read.ParticipantDto;
 import ee.erik.backend.application.dto.read.PaymentMethodDto;
+import ee.erik.backend.application.dto.update.UpdateEventDto;
 import ee.erik.backend.application.dto.update.UpdateParticipantDto;
 import ee.erik.backend.application.managers.EventManager;
 import ee.erik.backend.application.dto.create.CreateEventDto;
@@ -36,16 +37,16 @@ public class EventController {
         this.manager = manager;
     }
 
-    @Operation(summary = "List all events by before today or after today / Kuvab üritused kas enne või peale tänast kuupäeva", description = "List all events by before today or after today / Kuvab üritused kas enne või peale tänast kuupäeva", tags = {"Events"})
+    @Operation(summary = "List all events by before today or after today / Kuvab üritused kas enne või peale tänast kuupäeva", description = "List all events by before today or after today / Kuvab üritused kas enne või peale tänast kuupäeva")
     @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = EventDto.class))))
     @GetMapping(produces = { "application/json" })
     public Set<EventDto> events(@RequestParam(value = "event", required = false) EventSelector eventSelector) {
         return this.manager.findEvents(eventSelector);
     }
 
-    @Operation(summary = "Get event by id / Tagastab ürituse id kaudu", description = "Returns a event by id. / Tagastab ürituse id kaudu.")
+    @Operation(summary = "Get event by id / Tagastab ürituse id kaudu", description = "Returns an event by id. / Tagastab ürituse id kaudu.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PaymentMethodDto.class))),
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = EventDto.class))),
             @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
     })
     @GetMapping(path = "/{id}", produces = { "application/json" })
@@ -53,18 +54,32 @@ public class EventController {
         return this.manager.getEventById(id);
     }
 
-    @Operation(summary = "Creates new event / Loob uue ürituse", description = "Event can only be created using future date / Üritust on võimalik luua ainult tuleviku kuupäevaga", tags = {"Events"})
-    @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = EventDto.class))))
+    @Operation(summary = "Creates new event / Loob uue ürituse", description = "Event can only be created using future date / Üritust on võimalik luua ainult tuleviku kuupäevaga")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = EventDto.class))),
+            @ApiResponse(responseCode = "400", description = "Bad creation. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
+    }
+    )
     @PostMapping(produces = { "application/json" })
     public EventDto createNewEvent(@RequestBody CreateEventDto createEventDto) {
         return this.manager.createNewEvent(createEventDto);
+    }
+
+    @Operation(summary = "Update event by id / Uuendab üritust", description = "Updates an event. / Uuendab ürituse.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = EventDto.class))),
+            @ApiResponse(responseCode = "400", description = "Bad update. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
+    })
+    @PutMapping(path = "/{id}", produces = { "application/json" })
+    public EventDto updateEvent(@RequestBody UpdateEventDto updateEventDto) {
+        return this.manager.updateEvent(updateEventDto);
     }
 
     @Operation(summary = "Deletes an event / Kustutab ürituse", description = "Deletes an event. Only possible for events that haven't taken place / Kustutab ürituse. Ainult võimalik üritustel mis pole veel toimunud.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden deletion. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+            @ApiResponse(responseCode = "400", description = "Bad deletion. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     })
     @DeleteMapping(path = "/{id}", produces = { "application/json" })
     public void deleteEvent(@PathVariable Long id) {
@@ -95,7 +110,7 @@ public class EventController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success"),
             @ApiResponse(responseCode = "404", description = "Not found. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden deletion. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
+            @ApiResponse(responseCode = "400", description = "Bad deletion. Returs error with status.", content = @Content(schema = @Schema(implementation = ErrorDto.class)))
     })
     @PostMapping(path = "/{eventId}/participants", produces = { "application/json" })
     public ParticipantDto addParticipantToEvent(@PathVariable Long eventId, @RequestBody CreateParticipantDto createParticipantDto) {

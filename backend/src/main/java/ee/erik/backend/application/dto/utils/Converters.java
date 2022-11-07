@@ -2,10 +2,7 @@ package ee.erik.backend.application.dto.utils;
 
 import ee.erik.backend.application.dto.create.*;
 import ee.erik.backend.application.dto.read.*;
-import ee.erik.backend.application.dto.update.UpdateBusinessDto;
-import ee.erik.backend.application.dto.update.UpdateCitizenDto;
-import ee.erik.backend.application.dto.update.UpdateParticipantDto;
-import ee.erik.backend.application.dto.update.UpdatePaymentMethodDto;
+import ee.erik.backend.application.dto.update.*;
 import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.entities.Business;
@@ -93,6 +90,10 @@ public class Converters {
                 event.getLocation(),
                 event.getInfo()
         );
+    }
+
+    public static Event convertUpdateEventDtoToEvent(UpdateEventDto updateEventDto) {
+        return new Event(updateEventDto.getId(), updateEventDto.getName(), updateEventDto.getDate(), updateEventDto.getLocation(), updateEventDto.getInfo());
     }
 
     public static Event convertEventCreateDtoToEvent(CreateEventDto createEventDto) {

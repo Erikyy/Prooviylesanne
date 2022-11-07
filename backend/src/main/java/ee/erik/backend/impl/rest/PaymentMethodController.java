@@ -29,7 +29,7 @@ public class PaymentMethodController {
         this.paymentMethodManager = paymentMethodManager;
     }
 
-    @Operation(summary = "List all payment methods", description = "Returns all payment methods.", tags = {"PaymentMethod"})
+    @Operation(summary = "List all payment methods", description = "Returns all payment methods.")
     @ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = PaymentMethodDto.class))))
     @GetMapping(produces = { "application/json" })
     public Set<PaymentMethodDto> findAll() {
