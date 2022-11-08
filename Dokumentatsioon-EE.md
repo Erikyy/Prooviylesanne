@@ -75,6 +75,7 @@ App routing defineerib ainult lehekülge ei leitud lehte,
 teised lehed on defineeritud events kaustas.
 
 - Ürituse lisamise lehekülg - add-event kaustas
+- Ürituse uuendamise lehekülg - update-event kaustas
 - Ürituse vaatamine + osalejate vaade + lisamine - event kaustas
 - Osaleja vaade koos muutmisega - participant kaustas
 - Avaleht - events kausta sees index kaustas

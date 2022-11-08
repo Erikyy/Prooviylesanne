@@ -9,6 +9,7 @@
   - [Üles sättimine](#üles-sättimine)
   - [Jooksutamine](#jooksutamine)
     - [Testimine](#testimine)
+    - [Muu info](#muu-info)
 
 ## Tehnoloogiad
 
@@ -55,8 +56,10 @@ On mitu viisi kuidas jooksutada nii backendi kui ka frontendi rakendust. Kõige 
 Siin on see käsklus:
 
 ```
-docker-compose up -f docker-compose-full.yml
+docker-compose -f docker-compose-full.yml up
 ```
+
+Dockeriga frontendi url asub http://localhost:3001 ja backend http://localhost:8080.
 
 Teine viis on kasutada Integreeritud arenduskeskkonda, aga kõigepealt peab andmebaasi üles sättima kasutades `docker-compose up` käsklust. Intellij Idea's on võimalik jooksutada backendi läbi gradle taski või minna rakenduse [põhifaili](./backend/src/main/java/ee/erik/backend/Application.java). Frontendi on ka võimalik jooksutada läbi Intellij Idea keskonna kasutades jooksutamis nuppu (Ainult Ultimate versioon on toetatud selles).
 
@@ -99,3 +102,7 @@ windowsi peal või kui on kasutusel linux siis
 ```
 ./gradlew test -i
 ```
+
+### Muu info
+
+Kui backendi jooksutada siis see alguses loob ka kaks maksmis viisi: sularaha ja panga ülekanne.

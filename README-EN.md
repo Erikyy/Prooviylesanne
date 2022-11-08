@@ -9,6 +9,7 @@
   - [Setting up](#setting-up)
   - [Running](#running)
     - [Testing](#testing)
+    - [Additional info](#additional-info)
 
 ## Technologies
 
@@ -56,8 +57,10 @@ The easiest way is using docker-compose with docker-compose-full.yml file which 
 Here is the command:
 
 ```
-docker-compose up -f docker-compose-full.yml
+docker-compose -f docker-compose-full.yml up
 ```
+
+With docker frontend url is located at http://localhost:3001 and backend http://localhost:8080.
 
 Second way to run is through ide, but first database has to be
 setup first just using `docker-compose up` command. Intellij Idea is straight forward. Either using gradle tasks or straight going to main [application file](./backend/src/main/java/ee/erik/backend/Application.java). Frontend can also be launched using Intellij run button (Only Ultimate version supported for this).
@@ -101,3 +104,7 @@ on windows or on linux
 ```
 ./gradlew test -i
 ```
+
+### Additional info
+
+When backend is first ran, then it will create two payment methods: cash and bank transfer.

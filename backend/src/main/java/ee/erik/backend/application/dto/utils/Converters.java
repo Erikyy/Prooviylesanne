@@ -101,6 +101,7 @@ public class Converters {
         event.setName(createEventDto.getName());
         event.setDate(createEventDto.getDate());
         event.setLocation(createEventDto.getLocation());
+        event.setInfo(createEventDto.getInfo());
         return event;
     }
 

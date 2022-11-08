@@ -77,6 +77,7 @@ App routing only defines page not found page,
 other routes are defined in events folder.
 
 - Add event page - in add-event folder
+- Update event page - in update-event folder
 - View event details + particpants view + adding - in events folder
 - Participant detail view with update feature - participant folder
 - Main page - index folder inside events folder
