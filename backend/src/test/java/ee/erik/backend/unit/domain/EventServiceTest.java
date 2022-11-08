@@ -67,6 +67,22 @@ public class EventServiceTest {
     }
 
     @Test
+    public void serviceShouldUpdateNewEvent() {
+        Event expectedEvent = new Event();
+        expectedEvent.setId(1L);
+        expectedEvent.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
+
+        given(this.eventRepository.save(expectedEvent)).willReturn(expectedEvent);
+
+        Event createdEvent = this.eventService.updateEvent(expectedEvent);;
+
+        verify(this.eventRepository).save(this.eventArgumentCaptor.capture());
+
+        then(expectedEvent).isEqualTo(this.eventArgumentCaptor.getValue());
+        then(createdEvent).isEqualTo(expectedEvent);
+    }
+
+    @Test
     public void serviceShouldAddExistingParticipantToEvent() {
         Participant participant = new Participant();
         participant.setId(1L);

@@ -10,6 +10,7 @@ import ee.erik.backend.application.dto.read.ParticipantDto;
 import ee.erik.backend.application.dto.read.PaymentMethodDto;
 import ee.erik.backend.application.dto.update.UpdateBusinessDto;
 import ee.erik.backend.application.dto.update.UpdateCitizenDto;
+import ee.erik.backend.application.dto.update.UpdateEventDto;
 import ee.erik.backend.application.dto.update.UpdateParticipantDto;
 import ee.erik.backend.application.managers.EventManager;
 import ee.erik.backend.domain.services.EventSelector;
@@ -119,6 +120,30 @@ public class EventControllerTest {
         given(this.eventManager.createNewEvent(eventDto)).willReturn(this.testEvent);
 
         MvcResult result = mockMvc.perform(post("/api/v1/events")
+                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(eventDto)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        String json = result.getResponse().getContentAsString();
+
+        EventDto res = new ObjectMapper().readValue(json, EventDto.class);
+
+        assertEquals(res, this.testEvent);
+    }
+
+    @Test
+    public void controllerShouldUpdateEvent() throws Exception {
+        UpdateEventDto eventDto = new UpdateEventDto();
+        eventDto.setId(1L);
+        eventDto.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
+        eventDto.setName("test");
+        eventDto.setInfo("test");
+        eventDto.setLocation("test");
+
+        given(this.eventManager.updateEvent(eventDto)).willReturn(this.testEvent);
+
+        MvcResult result = mockMvc.perform(put("/api/v1/events/1")
                         .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(eventDto)))
                 .andExpect(status().isOk())
                 .andDo(print())

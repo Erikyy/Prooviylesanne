@@ -6,10 +6,12 @@ import ee.erik.backend.application.dto.read.EventDto;
 import ee.erik.backend.application.dto.read.ParticipantDto;
 import ee.erik.backend.application.dto.read.PaymentMethodDto;
 import ee.erik.backend.application.dto.update.UpdateCitizenDto;
+import ee.erik.backend.application.dto.update.UpdateEventDto;
 import ee.erik.backend.application.dto.update.UpdateParticipantDto;
 import ee.erik.backend.application.dto.utils.Converters;
 import ee.erik.backend.application.managers.EventManager;
 import ee.erik.backend.application.managers.PaymentMethodManager;
+import ee.erik.backend.domain.entities.Citizen;
 import ee.erik.backend.domain.entities.Event;
 import ee.erik.backend.domain.entities.Participant;
 import ee.erik.backend.domain.repositories.EventRepository;
@@ -37,6 +39,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -221,6 +224,35 @@ public class EverythingIntegrationTest {
     }
 
     @Test
+    public void shouldUpdateEventAndReturn() throws Exception {
+        Optional<Event> event = this.eventRepository.findAll().stream().findFirst();
+        assertThat(event).isPresent();
+
+        UpdateEventDto eventDto = new UpdateEventDto();
+        eventDto.setId(event.get().getId());
+        eventDto.setDate(Date.from(LocalDate.now().plusDays(4).atStartOfDay().toInstant(ZoneOffset.UTC)));
+        eventDto.setName("test");
+        eventDto.setInfo("test");
+        eventDto.setLocation("test");
+
+        mockMvc.perform(put("/api/v1/events/{id}", event.get().getId())
+                        .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(eventDto)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        MvcResult result = mockMvc.perform(get("/api/v1/events/{id}", event.get().getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        String json = result.getResponse().getContentAsString();
+
+        EventDto res = new ObjectMapper().readValue(json, EventDto.class);
+        assertThat(this.eventRepository.findAll()).isNotEmpty();
+        assertThat(res.getName()).isEqualTo(eventDto.getName());
+    }
+    @Test
     public void shouldReturnPaymentMethods() throws Exception {
         MvcResult payment_methods_res = mockMvc.perform(get("/api/v1/payment_methods")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -239,10 +271,29 @@ public class EverythingIntegrationTest {
     @Test
     public void shouldDeleteParticipantReference() throws Exception {
 
+        PaymentMethodEntity paymentMethod = new PaymentMethodEntity();
+        paymentMethod.setMethod("test");
+        this.dbPaymentMethodRepository.save(paymentMethod);
+
+        CitizenEntity citizenEntity = new CitizenEntity();
+        citizenEntity.setInfo("info");
+        citizenEntity.setIdNumber(32432434535L);
+        citizenEntity.setLastName("test");
+
+        ParticipantEntity participantEntity = new ParticipantEntity();
+        participantEntity.setName("test");
+        participantEntity.setPaymentMethod(AggregateReference.to(paymentMethod.getId()));
+        participantEntity.setCitizenEntity(
+                citizenEntity
+        );
+
+        ParticipantEntity newParticipant = this.dbParticipantRepository.save(participantEntity);
+
         Optional<Event> event = this.eventRepository.findAll().stream().findFirst();
         assertThat(event).isPresent();
+        this.eventRepository.saveWithParticipant(event.get(), newParticipant.getId());
 
-        Optional<Participant> participant = this.participantRepository.findById(1L);
+        Optional<Participant> participant = this.participantRepository.findByIdInEventById(newParticipant.getId(), event.get().getId());
         assertThat(participant).isPresent();
 
         mockMvc.perform(delete("/api/v1/events/{eventId}/participants/{participantId}", event.get().getId(), participant.get().getId())

@@ -5,6 +5,7 @@ import ee.erik.backend.application.dto.create.CreateParticipantDto;
 import ee.erik.backend.application.dto.read.EventDto;
 import ee.erik.backend.application.dto.read.ParticipantDto;
 import ee.erik.backend.application.dto.read.PaymentMethodDto;
+import ee.erik.backend.application.dto.update.UpdateEventDto;
 import ee.erik.backend.application.dto.update.UpdateParticipantDto;
 import ee.erik.backend.application.dto.utils.Converters;
 import ee.erik.backend.application.managers.EventManager;
@@ -63,6 +64,7 @@ public class EventManagerTest {
 
         given(this.eventService.findEvents(EventSelector.Before)).willReturn(Set.of(this.testEvent));
         given(this.eventService.createNewEvent(this.testEvent)).willReturn(this.testEvent);
+        given(this.eventService.updateEvent(this.testEvent)).willReturn(this.testEvent);
         given(this.eventService.getEventById(1L)).willReturn(this.testEvent);
 
         {
@@ -78,6 +80,12 @@ public class EventManagerTest {
             assertThat(eventDto.getName()).isEqualTo("Test");
         }
 
+        {
+            UpdateEventDto updateEventDto = new UpdateEventDto();
+            updateEventDto.setName("Test");
+            EventDto eventDto = this.eventManager.updateEvent(updateEventDto);
+            assertThat(eventDto.getName()).isEqualTo("Test");
+        }
         {
             EventDto returnedEventDto = this.eventManager.getEventById(1L);
             assertThat(returnedEventDto.getName()).isEqualTo("Test");
