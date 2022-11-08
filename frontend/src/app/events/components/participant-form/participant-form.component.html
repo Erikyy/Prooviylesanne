@@ -55,6 +55,7 @@
   >
   </app-participant-business-form>
   <app-exisiting-participant-form
+    (onBackClicked)="onBackClicked()"
     (onSubmit)="onEditSubmit($event)"
     *ngIf="participantTypeForm.value.participantType === 'existing'"
   >

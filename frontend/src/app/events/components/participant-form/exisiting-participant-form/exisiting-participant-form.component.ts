@@ -10,6 +10,7 @@ import { ButtonStyle } from 'src/app/shared/button/button.component';
 })
 export class ExisitingParticipantFormComponent implements OnInit {
   @Output('onSubmit') submit: EventEmitter<IParticipant> = new EventEmitter();
+  @Output('onBackClicked') backClick: EventEmitter<void> = new EventEmitter();
 
   participants: IParticipant[] = [];
 
@@ -54,7 +55,9 @@ export class ExisitingParticipantFormComponent implements OnInit {
     }
   }
 
-  onBackClicked(): void {}
+  onBackClicked(): void {
+    this.backClick.emit();
+  }
 
   getAllParticipants() {
     this.eventService.getParticipants().subscribe((participants) => {

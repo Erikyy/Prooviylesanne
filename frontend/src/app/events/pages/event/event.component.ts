@@ -9,6 +9,7 @@ import {
 import { IParticipant } from 'src/app/model/participant.model';
 import { IPaymentMethod } from 'src/app/model/payment-method.model';
 import { EventsService } from '../../events.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-event',
@@ -31,7 +32,11 @@ export class EventComponent implements OnInit {
 
   participants: IParticipant[] = [];
 
-  constructor(private router: Router, private eventService: EventsService) {
+  constructor(
+    private router: Router,
+    private location: Location,
+    private eventService: EventsService
+  ) {
     this.router.events.subscribe((data) => {
       if (data instanceof NavigationEnd) {
         this.activeRoute = data.url;
@@ -116,6 +121,6 @@ export class EventComponent implements OnInit {
       });
   }
   onBackClicked(): void {
-    this.router.navigate(['/']);
+    this.location.back();
   }
 }

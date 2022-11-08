@@ -41,9 +41,8 @@ export class UpdateEventComponent implements OnInit {
     let eventId = this.activeRoute.split('/')[1];
     this.eventService.getEventById(+eventId).subscribe((event) => {
       this.event = event;
-      console.log(this.event);
-
       this.eventId = event.id;
+      console.log(event);
     });
   }
 

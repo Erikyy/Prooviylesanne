@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { IEventFormData } from 'src/app/model/event-add.model';
 import { IEvent } from 'src/app/model/event.model';
 import { ButtonStyle } from 'src/app/shared/button/button.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-event-form',
@@ -42,13 +43,14 @@ export class EventFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.eventForm = this.formBuilder.group({
-      name: this.event.name,
-      date: '',
-      location: this.event.location,
-      info: this.event.info,
-    });
-    console.log(this.event);
+    if (this.event.id !== -1) {
+      this.eventForm = this.formBuilder.group({
+        name: this.event.name,
+        date: moment(this.event.date).format('DD.MM.yyyy HH:mm'),
+        location: this.event.location,
+        info: this.event.info,
+      });
+    }
   }
 
   onSubmit() {

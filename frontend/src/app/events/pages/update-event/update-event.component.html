@@ -1,6 +1,7 @@
 <app-mini-banner title="Ürituse Muutmine"></app-mini-banner>
 
 <app-event-form
+  *ngIf="event.id !== -1"
   (onBackClicked)="onBackClicked()"
   [update]="true"
   title="Ürituse Muutmine"
