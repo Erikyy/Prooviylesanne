@@ -32,11 +32,15 @@
       </div>
       <div class="flex gap-2 pt-8">
         <app-button
+          (onClick)="onBackClicked()"
           [buttonStyle]="btnStyle1"
           title="Tagasi"
           [buttonType]="''"
         ></app-button>
-        <app-button [buttonStyle]="btnStyle2" title="Lisa"></app-button>
+        <app-button
+          [buttonStyle]="btnStyle2"
+          [title]="update ? 'Salvesta' : 'Lisa'"
+        ></app-button>
       </div>
     </form>
   </div>

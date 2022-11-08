@@ -1,6 +1,7 @@
 <app-mini-banner title="Ürituse lisamine"></app-mini-banner>
 
 <app-event-form
+  (onBackClicked)="onBackClicked()"
   title="Ürituse lisamine"
   (onSubmit)="onSubmit($event)"
 ></app-event-form>

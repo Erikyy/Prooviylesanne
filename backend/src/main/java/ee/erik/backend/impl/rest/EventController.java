@@ -72,6 +72,7 @@ public class EventController {
     })
     @PutMapping(path = "/{id}", produces = { "application/json" })
     public EventDto updateEvent(@RequestBody UpdateEventDto updateEventDto) {
+        System.out.println(updateEventDto);
         return this.manager.updateEvent(updateEventDto);
     }
 

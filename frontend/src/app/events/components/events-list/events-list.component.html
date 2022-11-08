@@ -14,6 +14,13 @@
           >
         </td>
         <td *ngIf="removable">
+          <a
+            class="hover:underline"
+            [routerLink]="['/' + event.id + '/update-event']"
+            >Muuda</a
+          >
+        </td>
+        <td *ngIf="removable">
           <img
             (click)="removeClicked(event.id)"
             class="w-4 h-4 cursor-pointer"

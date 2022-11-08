@@ -15,8 +15,10 @@ import {
   EventComponent,
   EventsComponent,
   ParticipantComponent,
+  UpdateEventComponent,
 } from './pages';
 import { ExisitingParticipantFormComponent } from './components/participant-form/exisiting-participant-form/exisiting-participant-form.component';
+
 @NgModule({
   declarations: [
     EventComponent,
@@ -29,6 +31,7 @@ import { ExisitingParticipantFormComponent } from './components/participant-form
     ParticipantCitizenFormComponent,
     ParticipantBusinessFormComponent,
     ExisitingParticipantFormComponent,
+    UpdateEventComponent,
   ],
   imports: [
     CommonModule,

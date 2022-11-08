@@ -6,6 +6,7 @@ import {
   EventComponent,
   EventsComponent,
   ParticipantComponent,
+  UpdateEventComponent,
 } from './pages/';
 
 const routes: Routes = [
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: ':id/participant/:pid',
     component: ParticipantComponent,
+  },
+  {
+    path: ':id/update-event',
+    component: UpdateEventComponent,
   },
 ];
 

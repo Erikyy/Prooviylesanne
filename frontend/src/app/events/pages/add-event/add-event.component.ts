@@ -3,13 +3,19 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IEventFormData } from 'src/app/model/event-add.model';
 import { EventsService } from '../../events.service';
+import * as moment from 'moment';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-add-event',
   templateUrl: './add-event.component.html',
 })
 export class AddEventComponent implements OnInit {
-  constructor(private eventsService: EventsService, private router: Router) {}
+  constructor(
+    private eventsService: EventsService,
+    private location: Location,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -24,7 +30,7 @@ export class AddEventComponent implements OnInit {
       this.eventsService
         .addNewEvent({
           name,
-          date,
+          date: moment(date, 'DD.MM.yyyy HH:mm').toDate(),
           info,
           location,
         })
@@ -38,5 +44,9 @@ export class AddEventComponent implements OnInit {
           },
         });
     }
+  }
+
+  onBackClicked() {
+    this.location.back();
   }
 }

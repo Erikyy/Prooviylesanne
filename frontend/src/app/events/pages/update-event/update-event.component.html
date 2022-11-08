@@ -1,0 +1,9 @@
+<app-mini-banner title="Ürituse Muutmine"></app-mini-banner>
+
+<app-event-form
+  (onBackClicked)="onBackClicked()"
+  [update]="true"
+  title="Ürituse Muutmine"
+  [event]="event"
+  (onSubmit)="onSubmit($event)"
+></app-event-form>

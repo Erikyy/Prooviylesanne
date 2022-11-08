@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IEvent } from '../model/event.model';
 import { BackendService } from '../shared/backend.service';
-import * as moment from 'moment';
 import {
   IParticipantAdd,
   IParticipantBusinessAdd,
@@ -10,6 +9,7 @@ import {
 } from '../model/participant-add.model';
 import { IParticipant } from '../model/participant.model';
 import { IPaymentMethod } from '../model/payment-method.model';
+import { IEventAdd } from '../model/event-add.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,18 +21,12 @@ export class EventsService {
     return this.backendService.getEvents(fetchType);
   }
 
-  addNewEvent(event: {
-    name: string;
-    date: string;
-    location: string;
-    info: string;
-  }): Observable<IEvent> {
-    return this.backendService.addNewEvent({
-      name: event.name,
-      info: event.info,
-      location: event.location,
-      date: moment(event.date, 'DD.MM.yyyy HH:mm').toDate(),
-    });
+  addNewEvent(event: IEventAdd): Observable<IEvent> {
+    return this.backendService.addNewEvent(event);
+  }
+
+  updateEvent(event: IEvent): Observable<IEvent> {
+    return this.backendService.updateEvent(event);
   }
 
   removeEvent(id: number): Observable<unknown> {

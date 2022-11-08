@@ -26,8 +26,6 @@ export class BackendService {
   }
 
   addNewEvent(event: IEventAdd): Observable<IEvent> {
-    console.log('post');
-
     return this.http.post<IEvent>(`${environment.apiUrl}/events`, event).pipe(
       catchError(
         this.handleError<IEvent>('addEvent', {
@@ -35,10 +33,26 @@ export class BackendService {
           id: -1,
           location: event.location,
           name: event.name,
-          info: '',
+          info: event.info,
         })
       )
     );
+  }
+
+  updateEvent(event: IEvent): Observable<IEvent> {
+    return this.http
+      .put<IEvent>(`${environment.apiUrl}/events/${event.id}`, event)
+      .pipe(
+        catchError(
+          this.handleError<IEvent>('addEvent', {
+            date: event.date,
+            id: event.id,
+            location: event.location,
+            name: event.name,
+            info: event.info,
+          })
+        )
+      );
   }
 
   removeEvent(id: number): Observable<unknown> {
