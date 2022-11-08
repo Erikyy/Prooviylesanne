@@ -63,10 +63,8 @@ export class ParticipantCitizenFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('submit');
     let { name, idNumber, info, lastName, paymentMethod } =
       this.participantForm.value;
-    console.log(paymentMethod);
     if (name && idNumber && info && lastName && paymentMethod) {
       if (this.participant.citizen) {
         this.editSubmit.emit({
@@ -85,8 +83,6 @@ export class ParticipantCitizenFormComponent implements OnInit {
           business: null,
         });
       } else {
-        console.log('submit new');
-
         this.submit.emit({
           id: null,
           name,

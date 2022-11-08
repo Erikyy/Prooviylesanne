@@ -42,7 +42,6 @@ export class UpdateEventComponent implements OnInit {
     this.eventService.getEventById(+eventId).subscribe((event) => {
       this.event = event;
       this.eventId = event.id;
-      console.log(event);
     });
   }
 

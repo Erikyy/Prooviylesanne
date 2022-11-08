@@ -94,8 +94,6 @@ export class EventComponent implements OnInit {
   }
 
   onSubmit(participant: IParticipantAdd) {
-    console.log(participant);
-
     this.eventService
       .addParticipantToEvent(this.eventId, participant)
       .subscribe({

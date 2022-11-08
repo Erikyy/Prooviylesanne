@@ -42,7 +42,6 @@ export class MainHeaderComponent implements OnInit {
     this.router.events.subscribe((data) => {
       if (data instanceof NavigationEnd) {
         this.activeRoute = data.url.slice(1, data.url.length);
-        console.log(data);
       }
     });
   }
